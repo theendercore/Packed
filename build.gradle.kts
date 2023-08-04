@@ -18,7 +18,7 @@ repositories {
 
 modSettings {
     modId(base.archivesName.get())
-    modName("Team Voided Template Mod")
+    modName("Packed")
 
     entrypoint("main", "org.teamvoided.templatemod.TemplateMod::commonInit")
     entrypoint("client", "org.teamvoided.templatemod.TemplateMod::clientInit")

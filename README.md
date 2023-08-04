@@ -1,2 +1,2 @@
-# The TeamVoided Template Mod
-real text goes here
+# Packed
+B for backed
