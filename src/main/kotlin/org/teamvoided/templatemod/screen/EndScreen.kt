@@ -1,4 +1,4 @@
-package org.teamvoided.templatemod.screen.w.temp
+package org.teamvoided.templatemod.screen
 
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.ingame.HandledScreen
@@ -6,10 +6,13 @@ import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
+class EndScreen(handler: BScreenHandler, inventory: PlayerInventory, title: Text?) :
+    HandledScreen<BScreenHandler>(handler, inventory, title) {
+    override fun init() {
+        super.init()
+        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2
+    }
 
-class TempScreen(handler: TempScreenHandler, inventory: PlayerInventory, title: Text) :
-    HandledScreen<TempScreenHandler>(handler, inventory, title) {
-    private val TEXTURE: Identifier = Identifier("minecraft", "textures/gui/container/dispenser.png")
     override fun drawBackground(graphics: GuiGraphics, delta: Float, mouseX: Int, mouseY: Int) {
         val i = (width - backgroundWidth) / 2
         val j = (height - backgroundHeight) / 2
@@ -22,9 +25,7 @@ class TempScreen(handler: TempScreenHandler, inventory: PlayerInventory, title: 
         drawMouseoverTooltip(graphics, mouseX, mouseY)
     }
 
-    override fun init() {
-        super.init()
-        // Center the title
-        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2
+    companion object {
+        private val TEXTURE = Identifier("textures/gui/container/dispenser.png")
     }
 }
