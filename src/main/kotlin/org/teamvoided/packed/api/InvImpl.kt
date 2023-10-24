@@ -1,4 +1,4 @@
-package org.teamvoided.templatemod.api
+package org.teamvoided.packed.api
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories

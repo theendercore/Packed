@@ -1,4 +1,4 @@
-package org.teamvoided.templatemod.items
+package org.teamvoided.packed.items
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.client.item.BundleTooltipData
@@ -17,8 +17,8 @@ import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.world.World
-import org.teamvoided.templatemod.api.InvImpl
-import org.teamvoided.templatemod.screen.PackScreenHandler
+import org.teamvoided.packed.api.InvImpl
+import org.teamvoided.packed.screen.PackScreenHandler
 import org.teamvoided.voidlib.core.nbt.Type
 import org.teamvoided.voidlib.core.nbt.contains
 import java.util.*

@@ -14,14 +14,23 @@ description = "Yet another backpack mod"
 
 repositories {
     mavenCentral()
+
+    maven {
+        name = "TerraformersMC"
+        url = uri( "https://maven.terraformersmc.com/")
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = uri("https://maven.ladysnake.org/releases")
+    }
 }
 
 modSettings {
     modId(base.archivesName.get())
     modName("Packed")
 
-    entrypoint("main", "org.teamvoided.templatemod.TemplateMod::commonInit")
-    entrypoint("client", "org.teamvoided.templatemod.TemplateMod::clientInit")
+    entrypoint("main", "org.teamvoided.packed.Packed::commonInit")
+    entrypoint("client", "org.teamvoided.packed.Packed::clientInit")
 
     isModParent(true)
 }
@@ -29,6 +38,7 @@ modSettings {
 dependencies {
     modImplementation(files("voidlib-core-1.5.8+1.20.1.jar"))
     include(files("voidlib-core-1.5.8+1.20.1.jar"))
+    modImplementation("dev.emi:trinkets:${"3.7.1"}")
 }
 
 tasks {

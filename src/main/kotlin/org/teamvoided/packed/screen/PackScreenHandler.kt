@@ -1,4 +1,4 @@
-package org.teamvoided.templatemod.screen
+package org.teamvoided.packed.screen
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.slot.Slot
 import net.minecraft.server.network.ServerPlayerEntity
-import org.teamvoided.templatemod.api.InvImpl
-import org.teamvoided.templatemod.init.PaScreens.PACK_HANDLER
-import org.teamvoided.templatemod.items.PackItem.Companion.setInventory
+import org.teamvoided.packed.api.InvImpl
+import org.teamvoided.packed.init.PaScreens.PACK_HANDLER
+import org.teamvoided.packed.items.PackItem.Companion.setInventory
 
 class PackScreenHandler @JvmOverloads constructor(
     syncId: Int, playerInventory: PlayerInventory, private val inventory: InvImpl = InvImpl.ofSize(9),

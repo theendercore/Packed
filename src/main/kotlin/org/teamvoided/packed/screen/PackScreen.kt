@@ -1,4 +1,4 @@
-package org.teamvoided.templatemod.screen
+package org.teamvoided.packed.screen
 
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.ingame.HandledScreen

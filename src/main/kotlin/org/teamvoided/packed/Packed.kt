@@ -1,17 +1,16 @@
-package org.teamvoided.templatemod
+package org.teamvoided.packed
 
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
 import org.slf4j.LoggerFactory
-import org.teamvoided.templatemod.init.PaItems
-import org.teamvoided.templatemod.init.PaKeybinds
-import org.teamvoided.templatemod.init.PaNetwork
-import org.teamvoided.templatemod.init.PaScreens
+import org.teamvoided.packed.init.PaItems
+import org.teamvoided.packed.init.PaKeybinds
+import org.teamvoided.packed.init.PaNetwork
+import org.teamvoided.packed.init.PaScreens
 
 @Suppress("unused")
-
-object TemplateMod {
-    val log = LoggerFactory.getLogger(TemplateMod::class.java)
+object Packed {
+    val log = LoggerFactory.getLogger(Packed::class.java)
     const val MODID = "packed"
     var trinketsInstalled = false
     fun id(path: String): Identifier = Identifier(MODID, path)
