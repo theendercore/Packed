@@ -1,4 +1,4 @@
-package org.teamvoided.templatemod.items
+package org.teamvoided.templatemod.api
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
@@ -15,23 +15,13 @@ import kotlin.Int
  */
 @Suppress("unused")
 interface InvImpl : Inventory {
-    /**
-     * Retrieves the item list of this inventory.
-     * Must return the same instance every time it's called.
-     */
+
     val items: DefaultedList<ItemStack>
 
-    /**
-     * Returns the inventory size.
-     */
     override fun size(): Int {
         return items.size
     }
 
-    /**
-     * Checks if the inventory is empty.
-     * @return true if this inventory has only empty stacks, false otherwise.
-     */
     override fun isEmpty(): Boolean {
         for (i in 0 until size()) {
             val stack = getStack(i)

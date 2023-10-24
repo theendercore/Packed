@@ -41,3 +41,6 @@ bin/
 .DS_Store
 
 /run/
+
+## Temp
+voidlib-core-1.5.8+1.20.1.jar

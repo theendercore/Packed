@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.slot.Slot
 import net.minecraft.server.network.ServerPlayerEntity
+import org.teamvoided.templatemod.api.InvImpl
 import org.teamvoided.templatemod.init.PaScreens.PACK_HANDLER
-import org.teamvoided.templatemod.items.InvImpl
 import org.teamvoided.templatemod.items.PackItem.Companion.setInventory
 
 class PackScreenHandler @JvmOverloads constructor(
@@ -57,7 +57,8 @@ class PackScreenHandler @JvmOverloads constructor(
         }
         return newStack
     }
-    override fun canUse(player: PlayerEntity): Boolean =inventory.canPlayerUse(player)
+
+    override fun canUse(player: PlayerEntity): Boolean = inventory.canPlayerUse(player)
 
     private fun addPlayer(pInv: PlayerInventory) {
         // Inv
@@ -68,7 +69,7 @@ class PackScreenHandler @JvmOverloads constructor(
     }
 
     override fun close(player: PlayerEntity) {
-        if (player is ServerPlayerEntity && stack != ItemStack.EMPTY) stack.setInventory(inventory)
+        if (player is ServerPlayerEntity && !stack.isEmpty) stack.setInventory(inventory)
         super.close(player)
         inventory.onClose(player)
     }

@@ -17,6 +17,7 @@ import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.world.World
+import org.teamvoided.templatemod.api.InvImpl
 import org.teamvoided.templatemod.screen.PackScreenHandler
 import org.teamvoided.voidlib.core.nbt.Type
 import org.teamvoided.voidlib.core.nbt.contains
@@ -42,8 +43,6 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
             true
         } else false
     }
-
-
     override fun appendTooltip(item: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
         super.appendTooltip(item, world, tooltip, context)
         tooltip.add(Text.literal("6/9").formatted(Formatting.GRAY))
@@ -60,7 +59,13 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
     override fun createMenu(i: Int, pInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler =
         PackScreenHandler(i, pInv, this, cStack)
 
-    override fun getDisplayName(): Text = this.name
+    override fun getDisplayName(): Text = cStack.name
+
+    override fun getDefaultStack(): ItemStack {
+        val stack = super.getDefaultStack()
+        stack.setInventory(genDefault())
+        return stack
+    }
 
     companion object {
         fun ItemStack.getInventory(): InvImpl {
