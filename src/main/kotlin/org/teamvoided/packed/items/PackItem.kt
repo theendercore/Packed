@@ -4,13 +4,17 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.client.item.BundleTooltipData
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.client.item.TooltipData
+import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventories
+import net.minecraft.item.Equippable
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.ScreenHandler
+import net.minecraft.sound.SoundEvent
+import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Hand
@@ -23,7 +27,7 @@ import org.teamvoided.voidlib.core.nbt.Type
 import org.teamvoided.voidlib.core.nbt.contains
 import java.util.*
 
-class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory, InvImpl {
+class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory, InvImpl, Equippable {
     override var items: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
     private var cStack: ItemStack = ItemStack.EMPTY
 
@@ -60,7 +64,8 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
         PackScreenHandler(i, pInv, this, cStack)
 
     override fun getDisplayName(): Text = cStack.name
-
+    override fun getPreferredSlot(): EquipmentSlot = EquipmentSlot.CHEST
+    override fun getEquipSound(): SoundEvent = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
     override fun getDefaultStack(): ItemStack {
         val stack = super.getDefaultStack()
         stack.setInventory(genDefault())
@@ -83,5 +88,4 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
 
         fun genDefault(): InvImpl = InvImpl.ofSize(9)
     }
-
 }

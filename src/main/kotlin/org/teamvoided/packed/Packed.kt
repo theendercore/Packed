@@ -1,8 +1,11 @@
 package org.teamvoided.packed
 
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
 import org.slf4j.LoggerFactory
+import org.teamvoided.packed.client.ArmorPackRenderer
+import org.teamvoided.packed.compat.Trinkets
 import org.teamvoided.packed.init.PaItems
 import org.teamvoided.packed.init.PaKeybinds
 import org.teamvoided.packed.init.PaNetwork
@@ -25,6 +28,8 @@ object Packed {
         PaScreens.initClient()
         PaKeybinds.init()
         PaNetwork.initClient()
+        ArmorRenderer.register(ArmorPackRenderer(), PaItems.PACK)
+        if (trinketsInstalled) Trinkets.initClient()
     }
 
 

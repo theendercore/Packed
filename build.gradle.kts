@@ -14,15 +14,10 @@ description = "Yet another backpack mod"
 
 repositories {
     mavenCentral()
+    maven( "https://maven.terraformersmc.com/"){ name = "TerraformersMC" }
+    maven("https://maven.ladysnake.org/releases") { name = "Ladysnake Libs" }
+    maven("https://maven.teamvoided.org/releases") { name = "brokenfuse" }
 
-    maven {
-        name = "TerraformersMC"
-        url = uri( "https://maven.terraformersmc.com/")
-    }
-    maven {
-        name = "Ladysnake Libs"
-        url = uri("https://maven.ladysnake.org/releases")
-    }
 }
 
 modSettings {
@@ -36,8 +31,7 @@ modSettings {
 }
 
 dependencies {
-    modImplementation(files("voidlib-core-1.5.8+1.20.1.jar"))
-    include(files("voidlib-core-1.5.8+1.20.1.jar"))
+    modImplementation("org.teamvoided:voidlib-core:1.5.8+1.20.1")
     modImplementation("dev.emi:trinkets:${"3.7.1"}")
 }
 

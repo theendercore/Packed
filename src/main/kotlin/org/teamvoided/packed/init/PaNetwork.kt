@@ -5,7 +5,7 @@ import net.minecraft.item.Item
 import org.teamvoided.packed.Packed.id
 import org.teamvoided.packed.Packed.log
 import org.teamvoided.packed.Packed.trinketsInstalled
-import org.teamvoided.packed.compat.handleTrinkets
+import org.teamvoided.packed.compat.Trinkets
 import org.teamvoided.packed.items.PackItem
 
 object PaNetwork {
@@ -15,9 +15,9 @@ object PaNetwork {
     fun initServer() {
         ServerPlayNetworking.registerGlobalReceiver(OPEN_PACK_WITH_KEY) { _, player, _, _, _ ->
             val inv = player.inventory
-            if (trinketsInstalled) if (handleTrinkets(player)) return@registerGlobalReceiver
+            if (trinketsInstalled) if (Trinkets.handleTrinkets(player)) return@registerGlobalReceiver
             if (inv.containsAny(mutableSetOf(PaItems.PACK) as Set<Item>)) {
-                if (!PaItems.PACK.openPack(inv.offHand[0], player)) {
+                if (!PaItems.PACK.openPack(inv.armor[2], player) && !PaItems.PACK.openPack(inv.offHand[0], player)) {
                     player.inventory.main.forEach {
                         if (it.item is PackItem) {
                             log.info("Found item")
