@@ -6,18 +6,23 @@ import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.slot.Slot
 import net.minecraft.server.network.ServerPlayerEntity
-import org.teamvoided.templatemod.init.PaScreens.BHANDLER
-import org.teamvoided.templatemod.items.InventoryAPI
+import org.teamvoided.templatemod.init.PaScreens.PACK_HANDLER
 import org.teamvoided.templatemod.items.InvImpl
+import org.teamvoided.templatemod.items.PackItem.Companion.setInventory
 
-class BScreenHandler @JvmOverloads constructor(
-    syncId: Int, playerInventory: PlayerInventory, inventory: InvImpl = InvImpl.ofSize(9),
-) : ScreenHandler(BHANDLER, syncId) {
-    private val inventory: InvImpl
+class PackScreenHandler @JvmOverloads constructor(
+    syncId: Int, playerInventory: PlayerInventory, private val inventory: InvImpl = InvImpl.ofSize(9),
+) : ScreenHandler(PACK_HANDLER, syncId) {
+    private var stack: ItemStack = ItemStack.EMPTY
+
+    constructor(syncId: Int, playerInventory: PlayerInventory, inventory: InvImpl, stackIn: ItemStack) :
+            this(syncId, playerInventory, inventory) {
+        stack = stackIn
+    }
+
 
     init {
         checkSize(inventory, 9)
-        this.inventory = inventory
         inventory.onOpen(playerInventory.player)
         val gridX = 62
         val gridY = 17
@@ -28,8 +33,7 @@ class BScreenHandler @JvmOverloads constructor(
                 i++
             }
         }
-        addPlayerInventory(playerInventory)
-        addPlayerHotbar(playerInventory)
+        addPlayer(playerInventory)
     }
 
     override fun quickTransfer(player: PlayerEntity, invSlot: Int): ItemStack {
@@ -53,27 +57,18 @@ class BScreenHandler @JvmOverloads constructor(
         }
         return newStack
     }
+    override fun canUse(player: PlayerEntity): Boolean =inventory.canPlayerUse(player)
 
-    override fun canUse(player: PlayerEntity): Boolean {
-        return inventory.canPlayerUse(player)
-    }
-
-    private fun addPlayerInventory(playerInventory: PlayerInventory) {
+    private fun addPlayer(pInv: PlayerInventory) {
+        // Inv
         for (i in 0..2) for (l in 0..8)
-            addSlot(Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18))
-
-    }
-
-    private fun addPlayerHotbar(playerInventory: PlayerInventory) {
-        for (i in 0..8) addSlot(Slot(playerInventory, i, 8 + i * 18, 142))
+            addSlot(Slot(pInv, l + i * 9 + 9, 8 + l * 18, 84 + i * 18))
+        // Hotbar
+        for (i in 0..8) addSlot(Slot(pInv, i, 8 + i * 18, 142))
     }
 
     override fun close(player: PlayerEntity) {
-        if (player is ServerPlayerEntity) {
-            val item = player.getStackInHand(player.activeHand)
-            val stack = InventoryAPI.findInvItem(item)
-            stack?.setInventory(inventory)
-        }
+        if (player is ServerPlayerEntity && stack != ItemStack.EMPTY) stack.setInventory(inventory)
         super.close(player)
         inventory.onClose(player)
     }

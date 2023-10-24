@@ -1,39 +1,42 @@
 package org.teamvoided.templatemod
 
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry
-import net.minecraft.client.gui.screen.ingame.HandledScreens
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.util.Identifier
-import net.minecraft.util.collection.DefaultedList
 import org.slf4j.LoggerFactory
+import org.teamvoided.templatemod.init.PaKeybinds
+import org.teamvoided.templatemod.init.PaNetwork
+import org.teamvoided.templatemod.init.PaScreens
 import org.teamvoided.templatemod.items.BItem
 import org.teamvoided.templatemod.items.InventoryAPI
-import org.teamvoided.templatemod.reg.ScreenRegistry
-import org.teamvoided.templatemod.screen.BScreenHandler
-import org.teamvoided.templatemod.screen.EndScreen
+import org.teamvoided.templatemod.items.PackItem
 
 
 @Suppress("unused")
 
 object TemplateMod {
-    val LOGGER = LoggerFactory.getLogger(TemplateMod::class.java)
+    val log = LoggerFactory.getLogger(TemplateMod::class.java)
     const val MODID = "packed"
+    var trinketsInstalled = false
     fun id(path: String): Identifier = Identifier(MODID, path)
 
     val BITEM: Item = Registry.register(Registries.ITEM, id("bitem"), BItem())
 
-    val BHANDLER:  ScreenHandlerType<BScreenHandler> = ScreenHandlerRegistry.registerSimple(id("bhand"), ::BScreenHandler);
+    val PACK: PackItem = Registry.register(Registries.ITEM, id("pack"), PackItem())
+
     fun commonInit() {
-        ScreenRegistry.init()
+        if (FabricLoader.getInstance().isModLoaded("trinkets")) trinketsInstalled = true
+        PaScreens.initServer()
+        PaNetwork.initServer()
         InventoryAPI.init()
     }
 
     fun clientInit() {
-        HandledScreens.register(BHANDLER, ::EndScreen);
+        PaScreens.initClient()
+        PaKeybinds.init()
+        PaNetwork.initClient()
     }
 
 

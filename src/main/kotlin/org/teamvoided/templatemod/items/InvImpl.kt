@@ -5,22 +5,21 @@ import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
-import org.teamvoided.templatemod.items.iInvK
 import kotlin.Boolean
 import kotlin.Int
-import kotlin.invoke
 
 /**
  * A simple `Inventory` implementation with only default methods + an item list getter.
  *
  * Originally by Juuz
  */
-interface iInvK : Inventory {
+@Suppress("unused")
+interface InvImpl : Inventory {
     /**
      * Retrieves the item list of this inventory.
      * Must return the same instance every time it's called.
      */
-    val items: DefaultedList<ItemStack?>
+    val items: DefaultedList<ItemStack>
 
     /**
      * Returns the inventory size.
@@ -53,7 +52,7 @@ interface iInvK : Inventory {
     /**
      * Removes items from an inventory slot.
      * @param slot  The slot to remove from.
-     * @param count How many items to remove. If there are less items in the slot than what are requested,
+     * @param count How many items to remove. If there are fewer items in the slot than what are requested,
      * takes all items in that slot.
      */
     override fun removeStack(slot: Int, count: Int): ItemStack {
@@ -74,8 +73,8 @@ interface iInvK : Inventory {
 
     /**
      * Replaces the current stack in an inventory slot with the provided stack.
-     * @param slot  The inventory slot of which to replace the itemstack.
-     * @param stack The replacing itemstack. If the stack is too big for
+     * @param slot  The inventory slot of which to replace the itemStack.
+     * @param stack The replacing itemStack. If the stack is too big for
      * this inventory ([Inventory.getMaxCountPerStack]),
      * it gets resized to this inventory's maximum amount.
      */
@@ -113,14 +112,18 @@ interface iInvK : Inventory {
         /**
          * Creates an inventory from the item list.
          */
-        fun of(items: DefaultedList<ItemStack>): iInvK {
-            return  { items }
+        fun of(items: DefaultedList<ItemStack>): InvImpl {
+            return object : InvImpl {
+                override val items: DefaultedList<ItemStack>
+                    get() = items
+
+            }
         }
 
         /**
          * Creates a new inventory with the specified size.
          */
-        fun ofSize(size: Int): iInvK? {
+        fun ofSize(size: Int): InvImpl {
             return of(DefaultedList.ofSize(size, ItemStack.EMPTY))
         }
     }

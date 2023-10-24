@@ -10,7 +10,7 @@ plugins {
 group = project.properties["maven_group"]!!
 version = project.properties["mod_version"]!!
 base.archivesName.set(project.properties["archives_base_name"] as String)
-description = "TeamVoided Template Mod"
+description = "Yet another backpack mod"
 
 repositories {
     mavenCentral()
@@ -24,6 +24,11 @@ modSettings {
     entrypoint("client", "org.teamvoided.templatemod.TemplateMod::clientInit")
 
     isModParent(true)
+}
+
+dependencies {
+    modImplementation(files("voidlib-core-1.5.8+1.20.1.jar"))
+    include(files("voidlib-core-1.5.8+1.20.1.jar"))
 }
 
 tasks {

@@ -18,14 +18,12 @@ import net.minecraft.util.TypedActionResult
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.world.World
 import org.teamvoided.templatemod.api.HasInventory
-import org.teamvoided.templatemod.api.ImpInventory
-import org.teamvoided.templatemod.iInv
 import org.teamvoided.templatemod.screen.BScreenHandler
 import java.util.*
 
-class BItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory, iInv {
-    private var items: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
-    override fun getItems(): DefaultedList<ItemStack> = items
+class BItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory, InvImpl {
+    override var items: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
+//    fun getItems(): DefaultedList<ItemStack> = items
 
     override fun use(world: World, player: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> {
         val item = player.getStackInHand(hand)
@@ -45,29 +43,18 @@ class BItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory,
     override fun appendTooltip(item: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
         super.appendTooltip(item, world, tooltip, context)
         tooltip.add(Text.literal("yo mother").formatted(Formatting.GRAY))
-//        if (item.hasNbt()) {
-//            val stack = InventoryAPI.findInvItem(item)
-//            if (stack != null && !stack.getInventory().isEmpty) {
-//                for (i in 0 until 9) {
-//                    val invStack = inv.getStack(i)
-//                    if (invStack != ItemStack.EMPTY)
-//                        tooltip.add(invStack.name.copy().append(" x${invStack.count}")
-//                            .formatted(Formatting.ITALIC, Formatting.DARK_GRAY))
-//                }
-//            }
-//        }
     }
 
     override fun getTooltipData(item: ItemStack): Optional<TooltipData> {
-        val iInv = DefaultedList.of<ItemStack>()
+        val iInvK = DefaultedList.of<ItemStack>()
         if (item.hasNbt()) {
             val stack = InventoryAPI.findInvItem(item)
             if (stack != null && !stack.getInventory().isEmpty) {
                 val inv = stack.getInventory()
-                for (i in 0 until 9) iInv.add(inv.getStack(i))
+                for (i in 0 until 9) iInvK.add(inv.getStack(i))
             }
         }
-        return Optional.of<TooltipData>(BundleTooltipData(iInv, 1))
+        return Optional.of<TooltipData>(BundleTooltipData(iInvK, 1))
     }
 
     override fun createMenu(i: Int, playInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler =
@@ -75,20 +62,20 @@ class BItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory,
 
     override fun getDisplayName(): Text = this.name
     class InventoryIml(val stack: ItemStack) : HasInventory {
-        override fun getInventory(): iInv {
+        override fun getInventory(): InvImpl {
             if (stack.orCreateNbt.contains("Items", 9)) {
                 val inv = DefaultedList.ofSize(9, ItemStack.EMPTY)
                 Inventories.readNbt(stack.orCreateNbt, inv)
-                return iInv.of(inv)
+                return InvImpl.of(inv)
             }
             return genDefault()
         }
 
-        override fun setInventory(inv: iInv) {
+        override fun setInventory(inv: InvImpl) {
             Inventories.writeNbt(stack.orCreateNbt, inv.items)
         }
 
-        override fun genDefault(): iInv = iInv.ofSize(9)
+        override fun genDefault(): InvImpl = InvImpl.ofSize(9)
     }
 
 }

@@ -1,9 +1,9 @@
 package org.teamvoided.templatemod.api
 
-import org.teamvoided.templatemod.iInv
+import org.teamvoided.templatemod.items.InvImpl
 
 interface HasInventory {
-    fun getInventory(): iInv
-    fun setInventory(inv: iInv)
-    fun genDefault():iInv
+    fun getInventory(): InvImpl
+    fun setInventory(inv: InvImpl)
+    fun genDefault(): InvImpl
 }
