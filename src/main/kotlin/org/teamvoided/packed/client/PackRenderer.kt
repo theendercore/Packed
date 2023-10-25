@@ -25,8 +25,8 @@ object PackRenderer {
             matrices.translate(0.0, -0.6, -0.25)
 
             if (entity.isSneaky) {
-                matrices.multiply(Axis.X_POSITIVE.rotationDegrees(20f))
-                matrices.translate(0.0, -0.2, -0.1)
+                matrices.multiply(Axis.X_POSITIVE.rotationDegrees(22.5f))
+                matrices.translate(0.0, -0.2, -0.2)
             }
 
             renderer.renderItem(

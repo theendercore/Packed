@@ -4,7 +4,6 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.slot.Slot
 import net.minecraft.server.network.ServerPlayerEntity
 import org.teamvoided.packed.api.InvImpl
 import org.teamvoided.packed.init.PaScreens.PACK_HANDLER
@@ -12,14 +11,8 @@ import org.teamvoided.packed.items.PackItem.Companion.setInventory
 
 class PackScreenHandler @JvmOverloads constructor(
     syncId: Int, playerInventory: PlayerInventory, private val inventory: InvImpl = InvImpl.ofSize(9),
+    private val stack: ItemStack = ItemStack.EMPTY
 ) : ScreenHandler(PACK_HANDLER, syncId) {
-    private var stack: ItemStack = ItemStack.EMPTY
-
-    constructor(syncId: Int, playerInventory: PlayerInventory, inventory: InvImpl, stackIn: ItemStack) :
-            this(syncId, playerInventory, inventory) {
-        stack = stackIn
-    }
-
 
     init {
         checkSize(inventory, 9)
@@ -29,7 +22,7 @@ class PackScreenHandler @JvmOverloads constructor(
         var i = 0
         for (row in 0..2) {
             for (col in 0..2) {
-                addSlot(Slot(inventory, i, gridX + 18 * col, gridY + 18 * row))
+                addSlot(PackSlot(inventory, i, gridX + 18 * col, gridY + 18 * row))
                 i++
             }
         }
@@ -62,10 +55,12 @@ class PackScreenHandler @JvmOverloads constructor(
 
     private fun addPlayer(pInv: PlayerInventory) {
         // Inv
-        for (i in 0..2) for (l in 0..8)
-            addSlot(Slot(pInv, l + i * 9 + 9, 8 + l * 18, 84 + i * 18))
+        for (i in 0..2) for (l in 0..8) {
+            val idx = l + i * 9 + 9
+            addSlot(PackPlayerSlot(pInv, idx, 8 + l * 18, 84 + i * 18, stack))
+        }
         // Hotbar
-        for (i in 0..8) addSlot(Slot(pInv, i, 8 + i * 18, 142))
+        for (i in 0..8) addSlot(PackPlayerSlot(pInv, i, 8 + i * 18, 142, stack))
     }
 
     override fun close(player: PlayerEntity) {

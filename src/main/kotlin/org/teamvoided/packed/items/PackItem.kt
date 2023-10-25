@@ -66,10 +66,15 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
     override fun getDisplayName(): Text = cStack.name
     override fun getPreferredSlot(): EquipmentSlot = EquipmentSlot.CHEST
     override fun getEquipSound(): SoundEvent = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
+    override fun canBeNested(): Boolean = false
     override fun getDefaultStack(): ItemStack {
         val stack = super.getDefaultStack()
         stack.setInventory(genDefault())
         return stack
+    }
+
+    override fun markDirty() {
+       cStack.setInventory(this)
     }
 
     companion object {
