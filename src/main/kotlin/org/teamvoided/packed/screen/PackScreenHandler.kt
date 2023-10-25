@@ -70,11 +70,19 @@ class PackScreenHandler @JvmOverloads constructor(
     }
 
     override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
-        if (id != 1) return false
+        return if (!BTN_IDS.contains(id)) false
         else {
-            println("sort baf")
-            return true
+            when (id) {
+                1 -> inventory.sort(InvImpl.SortType.NORMAL)
+                2 -> inventory.sort(InvImpl.SortType.REVERSED)
+                else -> throw Error("Eyo how the tell did you get button $id and how is it on the list???")
+            }
+            true
         }
+    }
+
+    companion object {
+        val BTN_IDS = intArrayOf(1, 2)
     }
 
 }

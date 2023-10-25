@@ -47,6 +47,7 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
             true
         } else false
     }
+
     override fun appendTooltip(item: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
         super.appendTooltip(item, world, tooltip, context)
         tooltip.add(Text.literal("6/9").formatted(Formatting.GRAY))
@@ -74,7 +75,21 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
     }
 
     override fun markDirty() {
-       cStack.setInventory(this)
+        cStack.setInventory(this)
+    }
+
+    override fun sort(type: InvImpl.SortType) {
+        val toSort = mutableListOf<ItemStack>()
+        items.stream().forEach { if (!it.isEmpty) toSort.add(it) }
+
+        val sorted = when (type) {
+            InvImpl.SortType.NORMAL -> toSort.stream().sorted { a, b -> a.charAt(0) - b.charAt(0) }
+            InvImpl.SortType.REVERSED -> toSort.stream().sorted { a, b -> b.charAt(0) - a.charAt(0) }
+            else -> toSort.stream()
+        }.toArray()
+        items.clear()
+        sorted.forEachIndexed{ i: Int, x: Any -> items[i] = x as ItemStack }
+        super.sort(type)
     }
 
     companion object {
@@ -92,5 +107,7 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
         }
 
         fun genDefault(): InvImpl = InvImpl.ofSize(9)
+
+        fun ItemStack.charAt(id:Int) = this.item.name.string[id].code
     }
 }

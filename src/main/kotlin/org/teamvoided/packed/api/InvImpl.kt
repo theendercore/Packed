@@ -70,6 +70,10 @@ interface InvImpl : Inventory {
 
     override fun isValid(slot: Int, stack: ItemStack): Boolean = stack.item !is PackItem
 
+    fun sort(type: SortType = SortType.NORMAL){
+        this.markDirty()
+    }
+    enum class SortType { NORMAL, REVERSED, SPECIAL }
 
     companion object {
         fun of(items: DefaultedList<ItemStack>): InvImpl {
