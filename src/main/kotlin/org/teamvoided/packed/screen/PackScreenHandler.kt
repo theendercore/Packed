@@ -11,7 +11,7 @@ import org.teamvoided.packed.items.PackItem.Companion.setInventory
 
 class PackScreenHandler @JvmOverloads constructor(
     syncId: Int, playerInventory: PlayerInventory, private val inventory: InvImpl = InvImpl.ofSize(9),
-    private val stack: ItemStack = ItemStack.EMPTY
+    private val stack: ItemStack = ItemStack.EMPTY,
 ) : ScreenHandler(PACK_HANDLER, syncId) {
 
     init {
@@ -68,4 +68,13 @@ class PackScreenHandler @JvmOverloads constructor(
         super.close(player)
         inventory.onClose(player)
     }
+
+    override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
+        if (id != 1) return false
+        else {
+            println("sort baf")
+            return true
+        }
+    }
+
 }

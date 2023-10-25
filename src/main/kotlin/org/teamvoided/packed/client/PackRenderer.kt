@@ -24,9 +24,9 @@ object PackRenderer {
             matrices.multiply(Axis.X_POSITIVE.rotationDegrees(180f))
             matrices.translate(0.0, -0.6, -0.25)
 
-            if (entity.isSneaky) {
-                matrices.multiply(Axis.X_POSITIVE.rotationDegrees(22.5f))
-                matrices.translate(0.0, -0.2, -0.2)
+            if (entity.isInSneakingPose) {
+                matrices.multiply(Axis.X_POSITIVE.rotationDegrees(28f)) // 28 seams the right one
+                matrices.translate(0.0, -0.25, -0.16) //-0.16 real value
             }
 
             renderer.renderItem(
