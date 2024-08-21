@@ -22,6 +22,7 @@ import net.minecraft.util.TypedActionResult
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.world.World
 import java.util.*
+import kotlin.math.min
 
 class PackItem : Item(Settings().maxCount(1)), NamedScreenHandlerFactory, InvImpl, Equippable {
     override var items: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
@@ -78,16 +79,29 @@ class PackItem : Item(Settings().maxCount(1)), NamedScreenHandlerFactory, InvImp
     }
 
     override fun sort(type: InvImpl.SortType) {
-        val toSort = mutableListOf<ItemStack>()
-        items.stream().forEach { if (!it.isEmpty) toSort.add(it) }
+        val toSort = items.filterNot(ItemStack::isEmpty)
+            .groupBy({ it.copyWithCount(1) }, { it.count })
+            .mapValues { it.value.sum() }
+            .toMutableMap()
 
         val sorted = when (type) {
-            InvImpl.SortType.NORMAL -> toSort.stream().sorted { a, b -> a.charAt(0) - b.charAt(0) }
-            InvImpl.SortType.REVERSED -> toSort.stream().sorted { a, b -> b.charAt(0) - a.charAt(0) }
-            else -> toSort.stream()
-        }.toArray()
+            InvImpl.SortType.NORMAL -> toSort.toSortedMap { a, b -> a.charAt(0) - b.charAt(0) }
+            InvImpl.SortType.REVERSED -> toSort.toSortedMap { a, b -> b.charAt(0) - a.charAt(0) }
+            else -> toSort
+        }
         items.clear()
-        sorted.forEachIndexed { i: Int, x: Any -> items[i] = x as ItemStack }
+        val x = mutableListOf<ItemStack>()
+        sorted.forEach { (item, count) ->
+            if (count < 64) x.add(item.copyWithCount(count))
+            else {
+                var cc = count
+                while (cc > 0) {
+                    x.add(item.copyWithCount(min(cc, 64)))
+                    cc -= 64
+                }
+            }
+        }
+        items.addAll(x)
         super.sort(type)
     }
 
