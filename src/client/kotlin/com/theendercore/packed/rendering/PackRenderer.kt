@@ -1,4 +1,4 @@
-package org.teamvoided.packed.client
+package com.theendercore.packed.rendering
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.OverlayTexture
@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.Axis
-import org.teamvoided.packed.items.PackItem
+import com.theendercore.packed.items.PackItem
 
 
 object PackRenderer {
@@ -21,11 +21,11 @@ object PackRenderer {
             matrices.push()
             matrices.scale(0.6f, 0.6f, 0.6f)
 
-            matrices.multiply(Axis.X_POSITIVE.rotationDegrees(180f))
+            matrices.rotate(Axis.X_POSITIVE.rotationDegrees(180f))
             matrices.translate(0.0, -0.6, -0.25)
 
             if (entity.isInSneakingPose) {
-                matrices.multiply(Axis.X_POSITIVE.rotationDegrees(28f)) // 28 seams the right one
+                matrices.rotate(Axis.X_POSITIVE.rotationDegrees(28f)) // 28 seams the right one
                 matrices.translate(0.0, -0.25, -0.16) //-0.16 real value
             }
 

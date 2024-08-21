@@ -1,9 +1,9 @@
-package org.teamvoided.packed.screen
+package com.theendercore.packed.screen
 
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.gui.tooltip.Tooltip
-import net.minecraft.client.gui.widget.TexturedButtonWidget
+import net.minecraft.client.gui.widget.button.TexturedButtonWidget
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
@@ -25,7 +25,7 @@ class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: 
         super.init()
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2
 //        sortBtn.setPosition()
-        this.addDrawableChild(sortBtn)
+        this.addDrawableSelectableElement(sortBtn)
     }
 
     override fun drawBackground(graphics: GuiGraphics, delta: Float, mouseX: Int, mouseY: Int) {
@@ -35,14 +35,14 @@ class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: 
     }
 
     override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
-        renderBackground(graphics)
+        renderBackground(graphics, mouseX, mouseY, delta)
         super.render(graphics, mouseX, mouseY, delta)
         drawMouseoverTooltip(graphics, mouseX, mouseY)
     }
 
     companion object {
-        private val BG_TEXTURE = Identifier("textures/gui/container/dispenser.png")
-        private val BTN_TEXTURE = Identifier("textures/gui/container/creative_inventory/tabs.png")
+        private val BG_TEXTURE = Identifier.ofDefault("textures/gui/container/dispenser.png")
+        private val BTN_TEXTURE = Identifier.ofDefault("textures/gui/container/creative_inventory/tabs.png")
         private const val BTN_W = 26
         private const val BTN_H = 32
     }

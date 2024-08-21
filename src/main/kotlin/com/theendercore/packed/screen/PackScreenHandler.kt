@@ -1,13 +1,13 @@
-package org.teamvoided.packed.screen
+package com.theendercore.packed.screen
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.server.network.ServerPlayerEntity
-import org.teamvoided.packed.api.InvImpl
-import org.teamvoided.packed.init.PaScreens.PACK_HANDLER
-import org.teamvoided.packed.items.PackItem.Companion.setInventory
+import com.theendercore.packed.api.InvImpl
+import com.theendercore.packed.init.PaScreens.PACK_HANDLER
+import com.theendercore.packed.items.PackItem.Companion.setInventory
 
 class PackScreenHandler @JvmOverloads constructor(
     syncId: Int, playerInventory: PlayerInventory, private val inventory: InvImpl = InvImpl.ofSize(9),

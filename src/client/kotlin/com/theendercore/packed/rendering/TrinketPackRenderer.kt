@@ -1,4 +1,4 @@
-package org.teamvoided.packed.client
+package com.theendercore.packed.rendering
 
 import dev.emi.trinkets.api.SlotReference
 import dev.emi.trinkets.api.client.TrinketRenderer

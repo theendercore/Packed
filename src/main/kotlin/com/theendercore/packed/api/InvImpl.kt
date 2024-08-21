@@ -1,11 +1,11 @@
-package org.teamvoided.packed.api
+package com.theendercore.packed.api
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
-import org.teamvoided.packed.items.PackItem
+import com.theendercore.packed.items.PackItem
 
 /**
  * A simple `Inventory` implementation with only default methods + an item list getter.

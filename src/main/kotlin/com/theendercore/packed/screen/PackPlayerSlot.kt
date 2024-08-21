@@ -1,10 +1,10 @@
-package org.teamvoided.packed.screen
+package com.theendercore.packed.screen
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.Slot
-import org.teamvoided.packed.items.PackItem
+import com.theendercore.packed.items.PackItem
 
 class PackPlayerSlot(inventory: Inventory, i: Int, j: Int, k: Int, private val pack: ItemStack) :
     Slot(inventory, i, j, k) {

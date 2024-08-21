@@ -29,9 +29,9 @@ repositories {
 }
 
 modSettings {
-    entrypoint("main", "org.teamvoided.packed.Packed::commonInit")
-    entrypoint("client", "org.teamvoided.packed.Packed::clientInit")
-//    entrypoint("fabric-datagen", "org.teamvoided.template.data.gen.TemplateData")
+    entrypoint("main", "com.theendercore.packed.Packed::init")
+    entrypoint("client", "com.theendercore.packed.PackedClient::init")
+    entrypoint("fabric-datagen", "com.theendercore.packed.data.gen.PackedData")
 
 //    mixinFile("${modId()}.client.mixins.json")
 //    mixinFile("${modId()}.mixins.json")
@@ -44,6 +44,8 @@ dependencies {
 
     modCompileOnly("${libs.emi.get()}:api")
     modLocalRuntime(libs.emi)
+
+    modImplementation(libs.trinkets)
 
 //    modImplementation("org.teamvoided:voidlib-core:1.5.8+1.20.1")
 //    modImplementation("dev.emi:trinkets:${"3.7.1"}")

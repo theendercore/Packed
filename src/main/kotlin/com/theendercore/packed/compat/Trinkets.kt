@@ -1,12 +1,10 @@
-package org.teamvoided.packed.compat
+package com.theendercore.packed.compat
 
 import dev.emi.trinkets.api.TrinketsApi
-import dev.emi.trinkets.api.client.TrinketRendererRegistry
 import net.minecraft.entity.LivingEntity
 import net.minecraft.server.network.ServerPlayerEntity
-import org.teamvoided.packed.client.TrinketPackRenderer
-import org.teamvoided.packed.init.PaItems
-import org.teamvoided.packed.items.PackItem
+import com.theendercore.packed.init.PakItems
+import com.theendercore.packed.items.PackItem
 
 object Trinkets{
     fun handleTrinkets(player: ServerPlayerEntity): Boolean {
@@ -15,7 +13,7 @@ object Trinkets{
             comp.get().allEquipped.forEach {
                 val stack = it.right
                 if (stack.item is PackItem) {
-                    PaItems.PACK.openPack(stack, player)
+                    PakItems.PACK.openPack(stack, player)
                     return true
                 }
             }
@@ -31,10 +29,5 @@ object Trinkets{
             }
         }
         return false
-    }
-
-    fun initClient() {
-        TrinketRendererRegistry.registerRenderer(PaItems.PACK, TrinketPackRenderer())
-
     }
 }

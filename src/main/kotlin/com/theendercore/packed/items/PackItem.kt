@@ -1,16 +1,16 @@
-package org.teamvoided.packed.items
+package com.theendercore.packed.items
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.minecraft.client.item.BundleTooltipData
-import net.minecraft.client.item.TooltipContext
+import com.theendercore.packed.api.InvImpl
+import com.theendercore.packed.screen.PackScreenHandler
+import net.minecraft.client.item.TooltipConfig
 import net.minecraft.client.item.TooltipData
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.Inventories
 import net.minecraft.item.Equippable
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.registry.Holder
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.sound.SoundEvent
@@ -21,13 +21,9 @@ import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.world.World
-import org.teamvoided.packed.api.InvImpl
-import org.teamvoided.packed.screen.PackScreenHandler
-import org.teamvoided.voidlib.core.nbt.Type
-import org.teamvoided.voidlib.core.nbt.contains
 import java.util.*
 
-class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFactory, InvImpl, Equippable {
+class PackItem : Item(Settings().maxCount(1)), NamedScreenHandlerFactory, InvImpl, Equippable {
     override var items: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
     private var cStack: ItemStack = ItemStack.EMPTY
 
@@ -43,22 +39,25 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
         return if (stack.item is PackItem) {
             cStack = stack
             this.items = stack.getInventory().items
-            player.openHandledScreen(this)
+            player.openHandledScreen(stack.item as PackItem)
             true
         } else false
     }
 
-    override fun appendTooltip(item: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext) {
-        super.appendTooltip(item, world, tooltip, context)
-        tooltip.add(Text.literal("6/9").formatted(Formatting.GRAY))
+    override fun appendTooltip(
+        stack: ItemStack?, context: TooltipContext?, tooltip: MutableList<Text>?, config: TooltipConfig?
+    ) {
+        super.appendTooltip(stack, context, tooltip, config)
+        tooltip?.add(Text.literal("6/9").formatted(Formatting.GRAY))
     }
 
     override fun getTooltipData(stack: ItemStack): Optional<TooltipData> {
-        var inv = DefaultedList.of<ItemStack>()
-        if (stack.item is PackItem && stack.hasNbt()) {
-            inv = stack.getInventory().items
-        }
-        return Optional.of<TooltipData>(BundleTooltipData(inv, 1))
+//        var inv = DefaultedList.of<ItemStack>()
+//        if (stack.item is PackItem && stack.hasNbt()) {
+//            inv = stack.getInventory().items
+//        }
+//        return Optional.of<TooltipData>(BundleTooltipData(inv, 1))
+        return Optional.empty()
     }
 
     override fun createMenu(i: Int, pInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler =
@@ -66,7 +65,7 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
 
     override fun getDisplayName(): Text = cStack.name
     override fun getPreferredSlot(): EquipmentSlot = EquipmentSlot.CHEST
-    override fun getEquipSound(): SoundEvent = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
+    override fun getEquipSound(): Holder<SoundEvent> = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
     override fun canBeNested(): Boolean = false
     override fun getDefaultStack(): ItemStack {
         val stack = super.getDefaultStack()
@@ -88,26 +87,26 @@ class PackItem : Item(FabricItemSettings().maxCount(1)), NamedScreenHandlerFacto
             else -> toSort.stream()
         }.toArray()
         items.clear()
-        sorted.forEachIndexed{ i: Int, x: Any -> items[i] = x as ItemStack }
+        sorted.forEachIndexed { i: Int, x: Any -> items[i] = x as ItemStack }
         super.sort(type)
     }
 
     companion object {
         fun ItemStack.getInventory(): InvImpl {
-            if (this.contains("Items", Type.LIST_TYPE)) {
-                val inv = DefaultedList.ofSize(9, ItemStack.EMPTY)
-                Inventories.readNbt(this.orCreateNbt, inv)
-                return InvImpl.of(inv)
-            }
+//            if (this.contains("Items", Type.LIST_TYPE)) {
+//                val inv = DefaultedList.ofSize(9, ItemStack.EMPTY)
+//                Inventories.readNbt(this.orCreateNbt, inv)
+//                return InvImpl.of(inv)
+//            }
             return genDefault()
         }
 
         fun ItemStack.setInventory(inv: InvImpl) {
-            Inventories.writeNbt(this.orCreateNbt, inv.items)
+//            Inventories.writeNbt(this.orCreateNbt, inv.items)
         }
 
         fun genDefault(): InvImpl = InvImpl.ofSize(9)
 
-        fun ItemStack.charAt(id:Int) = this.item.name.string[id].code
+        fun ItemStack.charAt(id: Int) = this.item.name.string[id].code
     }
 }
