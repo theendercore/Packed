@@ -3,6 +3,7 @@ package com.theendercore.packed.screen
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.gui.tooltip.Tooltip
+import net.minecraft.client.gui.widget.button.ButtonWidget
 import net.minecraft.client.gui.widget.button.TexturedButtonWidget
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
@@ -10,41 +11,46 @@ import net.minecraft.util.Identifier
 
 class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: Text?) :
     HandledScreen<PackScreenHandler>(handler, inventory, title) {
-    val sortBtn = TexturedButtonWidget
-        .builder(Text.of("sort")) {
-            val id = if (hasShiftDown()) 2 else 1
-            if (handler.onButtonClick(client?.player!!, id))
-                client?.interactionManager?.clickButton(this.handler.syncId, id)
-        }
-        .size(BTN_W, BTN_H)
-        .tooltip(Tooltip.create(Text.of("hello")))
-        .position(100, 100)
-        .build()
+    var sortBtn: ButtonWidget? = null
 
     override fun init() {
         super.init()
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2
-//        sortBtn.setPosition()
-        this.addDrawableSelectableElement(sortBtn)
+        remove(sortBtn)
+        sortBtn = TexturedButtonWidget
+            .builder(Text.of("Sort")) {
+                val id = if (hasShiftDown()) 2 else 1
+                if (handler.onButtonClick(client?.player!!, id))
+                    client?.interactionManager?.clickButton(this.handler.syncId, id)
+            }
+            .size(BTN_W, BTN_H)
+            .tooltip(Tooltip.create(Text.of("Sort")))
+            .position((backgroundWidth - 10) / 2, titleY + 10)
+            .build()
+        addDrawableSelectableElement(sortBtn)
     }
 
     override fun drawBackground(graphics: GuiGraphics, delta: Float, mouseX: Int, mouseY: Int) {
-        val i = (width - backgroundWidth) / 2
-        val j = (height - backgroundHeight) / 2
-        graphics.drawTexture(BG_TEXTURE, i, j, 0, 0, backgroundWidth, backgroundHeight)
+        graphics.drawTexture(
+            BACKGROUND,
+            (width - backgroundWidth) / 2, (height - backgroundHeight) / 2,
+            0, 0,
+            backgroundWidth, backgroundHeight
+        )
     }
 
     override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
         renderBackground(graphics, mouseX, mouseY, delta)
         super.render(graphics, mouseX, mouseY, delta)
         drawMouseoverTooltip(graphics, mouseX, mouseY)
+        sortBtn?.setPosition((graphics.scaledWindowWidth / 2) + 45, 120)
     }
 
     companion object {
-        private val BG_TEXTURE = Identifier.ofDefault("textures/gui/container/dispenser.png")
-        private val BTN_TEXTURE = Identifier.ofDefault("textures/gui/container/creative_inventory/tabs.png")
-        private const val BTN_W = 26
-        private const val BTN_H = 32
+        private val BACKGROUND = Identifier.ofDefault("textures/gui/container/dispenser.png")
+        private val BUTTON = Identifier.ofDefault("textures/gui/container/creative_inventory/tabs.png")
+        private const val BTN_W = 34
+        private const val BTN_H = 16
     }
 
 }
