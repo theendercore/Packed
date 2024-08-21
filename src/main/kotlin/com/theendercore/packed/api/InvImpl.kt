@@ -1,6 +1,7 @@
 package com.theendercore.packed.api
 
 import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.items.PackItem.Companion.charAt
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.Inventory
@@ -70,10 +71,23 @@ interface InvImpl : Inventory {
 
     override fun isValid(slot: Int, stack: ItemStack): Boolean = stack.item !is PackItem
 
-    fun sort(type: SortType = SortType.NORMAL){
+    fun sort(type: SortType = SortType.NORMAL) {
         this.markDirty()
     }
-    enum class SortType { NORMAL, REVERSED, SPECIAL }
+
+    enum class SortType {
+        NORMAL,
+        REVERSED,
+        SPECIAL;
+
+        fun getSort(): (ItemStack, ItemStack) -> Int {
+            return when (this) {
+                NORMAL -> { a, b -> a.charAt(0) - b.charAt(0) }
+                REVERSED -> { a, b -> b.charAt(0) - a.charAt(0) }
+                else -> { _, _ -> 0 }
+            }
+        }
+    }
 
     companion object {
         fun of(items: DefaultedList<ItemStack>): InvImpl {

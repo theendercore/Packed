@@ -2,12 +2,22 @@ package com.theendercore.packed.init
 
 import com.theendercore.packed.Packed.id
 import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.util.dyeColor
 import net.minecraft.item.Item
+import net.minecraft.item.Item.Settings
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 
 object PakItems {
-    val PACK: PackItem = reg("pack", PackItem()) as PackItem
-    fun init(){}
-    private fun reg(id: String, item: Item): Item = Registry.register(Registries.ITEM, id(id), item)
+    val PACK: PackItem = reg(
+        "pack", PackItem(
+            Settings()
+                .maxCount(1)
+                .dyeColor(0xFFFFFF, false)
+        )
+    )
+
+    fun init() {}
+    private fun <T : Item> reg(id: String, item: T): T = Registry.register(Registries.ITEM, id(id), item)
+
 }

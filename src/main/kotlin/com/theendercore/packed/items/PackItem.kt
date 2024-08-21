@@ -2,6 +2,7 @@ package com.theendercore.packed.items
 
 import com.theendercore.packed.api.InvImpl
 import com.theendercore.packed.screen.PackScreenHandler
+import com.theendercore.packed.util.strictMatch
 import net.minecraft.client.item.TooltipConfig
 import net.minecraft.client.item.TooltipData
 import net.minecraft.entity.EquipmentSlot
@@ -24,7 +25,7 @@ import net.minecraft.world.World
 import java.util.*
 import kotlin.math.min
 
-class PackItem : Item(Settings().maxCount(1)), NamedScreenHandlerFactory, InvImpl, Equippable {
+class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, InvImpl, Equippable {
     override var items: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
     private var cStack: ItemStack = ItemStack.EMPTY
 
@@ -79,33 +80,37 @@ class PackItem : Item(Settings().maxCount(1)), NamedScreenHandlerFactory, InvImp
     }
 
     override fun sort(type: InvImpl.SortType) {
-        val toSort = items.filterNot(ItemStack::isEmpty)
+        val filteredItems = items.filterNot(ItemStack::isEmpty)
             .groupBy({ it.copyWithCount(1) }, { it.count })
             .mapValues { it.value.sum() }
-            .toMutableMap()
+        val unsortedItems = mutableMapOf<ItemStack, Int>()
+        for ((item, count) in filteredItems) {
+            val existingItem = unsortedItems.entries.find { (existingItem, _) -> existingItem.strictMatch(item) }
+            if (existingItem != null) existingItem.setValue(existingItem.value + count)
+            else unsortedItems[item] = count
+        }
 
-        val sorted = when (type) {
-            InvImpl.SortType.NORMAL -> toSort.toSortedMap { a, b -> a.charAt(0) - b.charAt(0) }
-            InvImpl.SortType.REVERSED -> toSort.toSortedMap { a, b -> b.charAt(0) - a.charAt(0) }
-            else -> toSort
-        }
-        items.clear()
-        val x = mutableListOf<ItemStack>()
-        sorted.forEach { (item, count) ->
-            if (count < 64) x.add(item.copyWithCount(count))
-            else {
-                var cc = count
-                while (cc > 0) {
-                    x.add(item.copyWithCount(min(cc, 64)))
-                    cc -= 64
+        val sortedItems = unsortedItems.toSortedMap(type.getSort())
+            .flatMap { (item, count) ->
+                val itemCounts = mutableListOf<ItemStack>()
+                if (count <= 64) {
+                    itemCounts.add(item.copyWithCount(count))
+                } else {
+                    var remaining = count
+                    while (remaining > 0) {
+                        itemCounts.add(item.copyWithCount(min(remaining, 64)))
+                        remaining -= 64
+                    }
                 }
+                itemCounts
             }
-        }
-        items.addAll(x)
+        items.clear()
+        sortedItems.forEachIndexed(items::set)
         super.sort(type)
     }
 
     companion object {
+
         fun ItemStack.getInventory(): InvImpl {
 //            if (this.contains("Items", Type.LIST_TYPE)) {
 //                val inv = DefaultedList.ofSize(9, ItemStack.EMPTY)
