@@ -46,9 +46,6 @@ dependencies {
     modLocalRuntime(libs.emi)
 
     modImplementation(libs.trinkets)
-
-//    modImplementation("org.teamvoided:voidlib-core:1.5.8+1.20.1")
-//    modImplementation("dev.emi:trinkets:${"3.7.1"}")
 }
 
 loom {

@@ -4,7 +4,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-src/main/generated/
 
 ### IntelliJ IDEA ###
 /.idea/
@@ -42,5 +41,5 @@ bin/
 
 /run/
 
-## Temp
-voidlib-core-1.5.8+1.20.1.jar
+### TeamVoided ###
+src/main/generated/
