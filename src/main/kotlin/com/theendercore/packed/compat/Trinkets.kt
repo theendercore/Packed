@@ -1,10 +1,10 @@
 package com.theendercore.packed.compat
 
+import com.theendercore.packed.init.PakItems
+import com.theendercore.packed.items.PackItem
 import dev.emi.trinkets.api.TrinketsApi
 import net.minecraft.entity.LivingEntity
 import net.minecraft.server.network.ServerPlayerEntity
-import com.theendercore.packed.init.PakItems
-import com.theendercore.packed.items.PackItem
 
 object Trinkets{
     fun handleTrinkets(player: ServerPlayerEntity): Boolean {

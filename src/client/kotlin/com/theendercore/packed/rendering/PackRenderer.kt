@@ -1,5 +1,6 @@
 package com.theendercore.packed.rendering
 
+import com.theendercore.packed.items.PackItem
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.VertexConsumerProvider
@@ -8,7 +9,6 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.Axis
-import com.theendercore.packed.items.PackItem
 
 
 object PackRenderer {

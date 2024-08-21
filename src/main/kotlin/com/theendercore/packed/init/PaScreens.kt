@@ -1,13 +1,13 @@
 package com.theendercore.packed.init
 
+import com.theendercore.packed.Packed.id
+import com.theendercore.packed.screen.PackScreenHandler
 import net.minecraft.feature_flags.FeatureFlags
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.ScreenHandlerType.Factory
-import com.theendercore.packed.Packed.id
-import com.theendercore.packed.screen.PackScreenHandler
 
 object PaScreens {
     val PACK_HANDLER = reg("pack_handler", ::PackScreenHandler)

@@ -1,11 +1,11 @@
 package com.theendercore.packed
 
+import com.theendercore.packed.init.PaNetwork
+import com.theendercore.packed.init.PaScreens
+import com.theendercore.packed.init.PakItems
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
 import org.slf4j.LoggerFactory
-import com.theendercore.packed.init.PakItems
-import com.theendercore.packed.init.PaNetwork
-import com.theendercore.packed.init.PaScreens
 
 @Suppress("unused")
 object Packed {

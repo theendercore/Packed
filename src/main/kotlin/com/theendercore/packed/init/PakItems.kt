@@ -1,10 +1,10 @@
 package com.theendercore.packed.init
 
+import com.theendercore.packed.Packed.id
+import com.theendercore.packed.items.PackItem
 import net.minecraft.item.Item
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import com.theendercore.packed.Packed.id
-import com.theendercore.packed.items.PackItem
 
 object PakItems {
     val PACK: PackItem = reg("pack", PackItem()) as PackItem
