@@ -8,8 +8,10 @@ import net.minecraft.network.codec.PacketCodecs
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.dynamic.Codecs
 
-data class BackpackContentsComponent(val stacks: DefaultedList<ItemStack> = DefaultedList.of()) : TooltipData {
-    constructor(items: List<ItemStack>) : this(DefaultedList.of()) {
+data class BackpackContentsComponent(val stacks: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)) :
+    TooltipData {
+    constructor(size: Int) : this(DefaultedList.ofSize(size, ItemStack.EMPTY))
+    constructor(items: List<ItemStack>) : this() {
         items.forEachIndexed(stacks::set)
     }
 

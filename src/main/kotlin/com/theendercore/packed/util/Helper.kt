@@ -23,8 +23,10 @@ fun ItemStack.loseMatch(stack: ItemStack): Boolean = ItemStack.itemsMatch(this, 
 fun <T> RegistryKey<Registry<T>>.tag(id: Identifier) = TagKey.of(this, id)
 
 
+
+// Component Helpers
 fun Settings.dyeColor(color: Int, showInToolTip: Boolean = false): Settings =
     this.component(DYED_COLOR, DyedColorComponent(color, showInToolTip))
 
-fun Settings.isBackpack(): Settings =
-    this.component(PakDataComponents.BACKPACK_CONTENTS, BackpackContentsComponent.EMPTY)
+fun Settings.backpack(size: Int = 9): Settings =
+    this.component(PakDataComponents.BACKPACK_CONTENTS, BackpackContentsComponent(size))

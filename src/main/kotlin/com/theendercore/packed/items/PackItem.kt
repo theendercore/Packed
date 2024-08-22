@@ -1,6 +1,8 @@
 package com.theendercore.packed.items
 
 import com.theendercore.packed.api.InvImpl
+import com.theendercore.packed.component.BackpackContentsComponent
+import com.theendercore.packed.init.PakDataComponents
 import com.theendercore.packed.screen.PackScreenHandler
 import com.theendercore.packed.util.strictMatch
 import net.minecraft.client.item.TooltipConfig
@@ -12,6 +14,7 @@ import net.minecraft.item.Equippable
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.Holder
+import net.minecraft.registry.Registries
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.sound.SoundEvent
@@ -39,8 +42,8 @@ class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, 
 
     fun openPack(stack: ItemStack, player: PlayerEntity): Boolean {
         return if (stack.item is PackItem) {
+            this.items = stack.getBackpackContents()?.stacks ?: return false
             cStack = stack
-            this.items = stack.getInventory().items
             player.openHandledScreen(stack.item as PackItem)
             true
         } else false
@@ -54,12 +57,7 @@ class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, 
     }
 
     override fun getTooltipData(stack: ItemStack): Optional<TooltipData> {
-//        var inv = DefaultedList.of<ItemStack>()
-//        if (stack.item is PackItem && stack.hasNbt()) {
-//            inv = stack.getInventory().items
-//        }
-//        return Optional.of<TooltipData>(BundleTooltipData(inv, 1))
-        return Optional.empty()
+        return Optional.ofNullable(stack.getBackpackContents())
     }
 
     override fun createMenu(i: Int, pInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler =
@@ -69,14 +67,8 @@ class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, 
     override fun getPreferredSlot(): EquipmentSlot = EquipmentSlot.CHEST
     override fun getEquipSound(): Holder<SoundEvent> = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
     override fun canBeNested(): Boolean = false
-    override fun getDefaultStack(): ItemStack {
-        val stack = super.getDefaultStack()
-        stack.setInventory(genDefault())
-        return stack
-    }
-
     override fun markDirty() {
-        cStack.setInventory(this)
+        cStack.setBackpackContents(this.items)
     }
 
     override fun sort(type: InvImpl.SortType) {
@@ -110,22 +102,11 @@ class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, 
     }
 
     companion object {
+        fun ItemStack.getBackpackContents(): BackpackContentsComponent? = this.get(PakDataComponents.BACKPACK_CONTENTS)
+        fun ItemStack.setBackpackContents(stacks: DefaultedList<ItemStack>) =
+            this.set(PakDataComponents.BACKPACK_CONTENTS, BackpackContentsComponent(stacks))
 
-        fun ItemStack.getInventory(): InvImpl {
-//            if (this.contains("Items", Type.LIST_TYPE)) {
-//                val inv = DefaultedList.ofSize(9, ItemStack.EMPTY)
-//                Inventories.readNbt(this.orCreateNbt, inv)
-//                return InvImpl.of(inv)
-//            }
-            return genDefault()
-        }
-
-        fun ItemStack.setInventory(inv: InvImpl) {
-//            Inventories.writeNbt(this.orCreateNbt, inv.items)
-        }
-
-        fun genDefault(): InvImpl = InvImpl.ofSize(9)
-
-        fun ItemStack.charAt(id: Int) = this.item.name.string[id].code
+        fun ItemStack.charAt(id: Int) = this.item.id.path[id].code //.name.string[id].code
+        val Item.id get() = Registries.ITEM.getId(this)
     }
 }

@@ -5,6 +5,7 @@ package com.theendercore.packed.data.gen
 import com.theendercore.packed.data.PakItemTags
 import com.theendercore.packed.data.gen.tags.ItemTagProvider
 import com.theendercore.packed.init.PakItems
+import com.theendercore.packed.init.PakTabs
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
@@ -18,6 +19,7 @@ import net.minecraft.item.Items
 import net.minecraft.registry.HolderLookup
 import org.apache.commons.lang3.text.WordUtils
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 @Suppress("unused")
 object PackedData : DataGeneratorEntrypoint {
@@ -48,6 +50,7 @@ object PackedData : DataGeneratorEntrypoint {
         override fun generateTranslations(lookup: HolderLookup.Provider, gen: TranslationBuilder) {
             gen.add("item.packed.pack", "Pack")
             PakItemTags.ITEM_TAGS.forEach { gen.add(it.translationKey, it.id.path.lang()) }
+            PakTabs.PACKED_TAB.key.getOrNull()?.let { gen.add(it, it.value.path.lang()) }
         }
     }
 

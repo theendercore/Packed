@@ -2,15 +2,16 @@ package com.theendercore.packed.screen
 
 import com.theendercore.packed.api.InvImpl
 import com.theendercore.packed.init.PaScreens.PACK_HANDLER
-import com.theendercore.packed.items.PackItem.Companion.setInventory
+import com.theendercore.packed.items.PackItem.Companion.setBackpackContents
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.server.network.ServerPlayerEntity
 
-class PackScreenHandler @JvmOverloads constructor(
-    syncId: Int, playerInventory: PlayerInventory, private val inventory: InvImpl = InvImpl.ofSize(9),
+class PackScreenHandler(
+    syncId: Int, playerInventory: PlayerInventory,
+    private val inventory: InvImpl = InvImpl.ofSize(9),
     private val stack: ItemStack = ItemStack.EMPTY,
 ) : ScreenHandler(PACK_HANDLER, syncId) {
 
@@ -64,7 +65,7 @@ class PackScreenHandler @JvmOverloads constructor(
     }
 
     override fun close(player: PlayerEntity) {
-        if (player is ServerPlayerEntity && !stack.isEmpty) stack.setInventory(inventory)
+        if (player is ServerPlayerEntity && !stack.isEmpty) stack.setBackpackContents(inventory.items)
         super.close(player)
         inventory.onClose(player)
     }
@@ -75,7 +76,7 @@ class PackScreenHandler @JvmOverloads constructor(
             when (id) {
                 1 -> inventory.sort(InvImpl.SortType.NORMAL)
                 2 -> inventory.sort(InvImpl.SortType.REVERSED)
-                else -> throw Error("Eyo how the tell did you get button $id and how is it on the list???")
+                else -> throw IndexOutOfBoundsException("Eyo how the hell did you get button $id?!?!")
             }
             true
         }
@@ -84,5 +85,4 @@ class PackScreenHandler @JvmOverloads constructor(
     companion object {
         val BTN_IDS = intArrayOf(1, 2)
     }
-
 }
