@@ -2,6 +2,8 @@
 
 package com.theendercore.packed.util
 
+import com.theendercore.packed.component.BackpackContentsComponent
+import com.theendercore.packed.init.PakDataComponents
 import net.minecraft.component.DataComponentTypes.DYED_COLOR
 import net.minecraft.component.type.DyedColorComponent
 import net.minecraft.item.Item.Settings
@@ -23,3 +25,6 @@ fun <T> RegistryKey<Registry<T>>.tag(id: Identifier) = TagKey.of(this, id)
 
 fun Settings.dyeColor(color: Int, showInToolTip: Boolean = false): Settings =
     this.component(DYED_COLOR, DyedColorComponent(color, showInToolTip))
+
+fun Settings.isBackpack(): Settings =
+    this.component(PakDataComponents.BACKPACK_CONTENTS, BackpackContentsComponent.EMPTY)
