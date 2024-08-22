@@ -4,7 +4,7 @@ import com.theendercore.packed.api.InvImpl
 import com.theendercore.packed.component.BackpackContentsComponent
 import com.theendercore.packed.init.PakDataComponents
 import com.theendercore.packed.screen.PackScreenHandler
-import com.theendercore.packed.util.strictMatch
+import com.theendercore.packed.util.toCollectedStacks
 import net.minecraft.client.item.TooltipConfig
 import net.minecraft.client.item.TooltipData
 import net.minecraft.entity.EquipmentSlot
@@ -20,7 +20,6 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.collection.DefaultedList
@@ -49,11 +48,12 @@ class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, 
         } else false
     }
 
+    //remove
     override fun appendTooltip(
         stack: ItemStack?, context: TooltipContext?, tooltip: MutableList<Text>?, config: TooltipConfig?
     ) {
         super.appendTooltip(stack, context, tooltip, config)
-        tooltip?.add(Text.literal("6/9").formatted(Formatting.GRAY))
+//        tooltip?.add(Text.literal("6/9").formatted(Formatting.GRAY))
     }
 
     override fun getTooltipData(stack: ItemStack): Optional<TooltipData> {
@@ -72,17 +72,7 @@ class PackItem(settings: Settings) : Item(settings), NamedScreenHandlerFactory, 
     }
 
     override fun sort(type: InvImpl.SortType) {
-        val filteredItems = items.filterNot(ItemStack::isEmpty)
-            .groupBy({ it.copyWithCount(1) }, { it.count })
-            .mapValues { it.value.sum() }
-        val unsortedItems = mutableMapOf<ItemStack, Int>()
-        for ((item, count) in filteredItems) {
-            val existingItem = unsortedItems.entries.find { (existingItem, _) -> existingItem.strictMatch(item) }
-            if (existingItem != null) existingItem.setValue(existingItem.value + count)
-            else unsortedItems[item] = count
-        }
-
-        val sortedItems = unsortedItems.toSortedMap(type.getSort())
+        val sortedItems = items.toCollectedStacks().toSortedMap(type.getSort())
             .flatMap { (item, count) ->
                 val itemCounts = mutableListOf<ItemStack>()
                 if (count <= 64) {
