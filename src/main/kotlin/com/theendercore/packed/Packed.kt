@@ -2,6 +2,7 @@ package com.theendercore.packed
 
 import com.theendercore.packed.init.PaNetwork
 import com.theendercore.packed.init.PaScreens
+import com.theendercore.packed.init.PakDataComponents
 import com.theendercore.packed.init.PakItems
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
@@ -16,6 +17,7 @@ object Packed {
     fun init() {
         if (FabricLoader.getInstance().isModLoaded("trinkets")) trinketsInstalled = true
         PakItems.init()
+        PakDataComponents.init()
         PaScreens.init()
         PaNetwork.init()
     }
