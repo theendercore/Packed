@@ -1,5 +1,7 @@
 package com.theendercore.packed.data.gen.tags
 
+import com.theendercore.packed.data.PakItemTags.BACKPACKS
+import com.theendercore.packed.data.RefItemTags.CHEST_BACK
 import com.theendercore.packed.init.PakItems
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider
@@ -11,6 +13,12 @@ class ItemTagProvider(o: FabricDataOutput, r: CompletableFuture<HolderLookup.Pro
     FabricTagProvider.ItemTagProvider(o, r, tags) {
     override fun configure(lookup: HolderLookup.Provider) {
         getOrCreateTagBuilder(ItemTags.DYEABLE)
+            .add(PakItems.PACK)
+
+        getOrCreateTagBuilder(CHEST_BACK)
+            .forceAddTag(BACKPACKS)
+
+        getOrCreateTagBuilder(BACKPACKS)
             .add(PakItems.PACK)
     }
 }

@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.theendercore.packed.data.gen
 
+import com.theendercore.packed.data.PakItemTags
 import com.theendercore.packed.data.gen.tags.ItemTagProvider
 import com.theendercore.packed.init.PakItems
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
@@ -13,6 +16,7 @@ import net.minecraft.data.client.model.BlockStateModelGenerator
 import net.minecraft.data.client.model.Models
 import net.minecraft.item.Items
 import net.minecraft.registry.HolderLookup
+import org.apache.commons.lang3.text.WordUtils
 import java.util.concurrent.CompletableFuture
 
 @Suppress("unused")
@@ -43,6 +47,9 @@ object PackedData : DataGeneratorEntrypoint {
         FabricLanguageProvider(o, r) {
         override fun generateTranslations(lookup: HolderLookup.Provider, gen: TranslationBuilder) {
             gen.add("item.packed.pack", "Pack")
+            PakItemTags.ITEM_TAGS.forEach { gen.add(it.translationKey, it.id.path.lang()) }
         }
     }
+
+    fun String.lang() = WordUtils.capitalize(this.replace("_", " ").replace("/", " "))
 }

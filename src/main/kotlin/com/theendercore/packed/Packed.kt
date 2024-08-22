@@ -13,11 +13,13 @@ object Packed {
     const val MODID = "packed"
     var trinketsInstalled = false
 
-    fun id(path: String): Identifier = Identifier.of(MODID, path)
     fun init() {
         if (FabricLoader.getInstance().isModLoaded("trinkets")) trinketsInstalled = true
         PakItems.init()
         PaScreens.init()
         PaNetwork.init()
     }
+
+    fun id(path: String): Identifier = Identifier.of(MODID, path)
+    fun id(namespace: String, path: String): Identifier = Identifier.of(namespace, path)
 }
