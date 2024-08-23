@@ -1,7 +1,7 @@
 package com.theendercore.packed.init
 
 import com.theendercore.packed.Packed.id
-import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.items.BackPackItem
 import com.theendercore.packed.util.backpack
 import com.theendercore.packed.util.dyeColor
 import net.minecraft.item.Item
@@ -10,8 +10,8 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 
 object PakItems {
-    val PACK: PackItem = reg(
-        "pack", PackItem(
+    val PACK: BackPackItem = reg(
+        "pack", BackPackItem(
             Settings()
                 .maxCount(1)
                 .backpack()

@@ -1,21 +1,19 @@
 package com.theendercore.packed.screen
 
 import com.theendercore.packed.Packed.log
-import com.theendercore.packed.api.InvImpl
-import com.theendercore.packed.api.SortType
 import com.theendercore.packed.init.PakScreens.PACK_HANDLER
+import com.theendercore.packed.inv.BackpackInventory
+import com.theendercore.packed.inv.SortType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.Inventory
-import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.server.network.ServerPlayerEntity
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber" )
 class PackScreenHandler(
     syncId: Int, playerInventory: PlayerInventory,
-    private val inventory: Inventory = SimpleInventory(27),
+    private val inventory: BackpackInventory = BackpackInventory(ItemStack.EMPTY),
 ) : ScreenHandler(PACK_HANDLER, syncId) {
 
     init {
@@ -33,11 +31,8 @@ class PackScreenHandler(
                 }
             }
             playerInventory.addSlots()
-        } catch (e: Exception) {
+        } catch (e: IllegalStateException) {
             log.error("Error while creating pack screen handler", e)
-            val player = playerInventory.player
-            player.openHandledScreen(null)
-            this.close(player)
         }
     }
 
@@ -59,7 +54,6 @@ class PackScreenHandler(
             if (originalStack.isEmpty) {
                 slot.stack = ItemStack.EMPTY
             } else slot.markDirty()
-
         }
         return newStack
     }
@@ -72,7 +66,7 @@ class PackScreenHandler(
 
     override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
         val storyType = BUTTON_IDS[id]
-        return if (storyType != null && inventory is InvImpl) {
+        return if (storyType != null) {
             inventory.sort(storyType)
             true
         } else false

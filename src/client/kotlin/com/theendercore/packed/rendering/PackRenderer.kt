@@ -1,6 +1,6 @@
 package com.theendercore.packed.rendering
 
-import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.util.isBackpack
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.VertexConsumerProvider
@@ -17,7 +17,7 @@ object PackRenderer {
         matrices: MatrixStack, vertexConsumers: VertexConsumerProvider,
         entity: LivingEntity, stack: ItemStack, light: Int,
     ) {
-        if (stack.item is PackItem) {
+        if (stack.isBackpack()) {
             matrices.push()
             matrices.scale(0.6f, 0.6f, 0.6f)
 

@@ -3,7 +3,7 @@ package com.theendercore.packed.init
 import com.theendercore.packed.Packed.id
 import com.theendercore.packed.Packed.trinketsInstalled
 import com.theendercore.packed.compat.Trinkets
-import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.items.BackPackItem
 import com.theendercore.packed.util.openBackpack
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
@@ -23,7 +23,7 @@ object PakNetwork {
 
             if (!player.openBackpack(inv.armor[2]) && !player.openBackpack(inv.offHand[0])) {
                 player.inventory.main.forEach {
-                    if (it.item is PackItem) {
+                    if (it.item is BackPackItem) {
                         player.openBackpack(it)
                         return@msg
                     }

@@ -1,5 +1,6 @@
 package com.theendercore.packed.util
 
+import com.theendercore.packed.items.BackPackItem.Companion.makeBackpackScreen
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
@@ -21,7 +22,7 @@ fun DefaultedList<ItemStack>.toCollectedStacks(): MutableMap<ItemStack, Int> {
 fun PlayerEntity.openBackpack(stack: ItemStack): Boolean {
     val backpackContents = stack.getBackpackContents()
     return if (backpackContents != null) {
-        this.openHandledScreen(backpackContents)
+        this.openHandledScreen(makeBackpackScreen(stack))
         true
     } else false
 }

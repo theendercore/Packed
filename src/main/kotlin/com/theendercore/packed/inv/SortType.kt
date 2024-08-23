@@ -1,4 +1,4 @@
-package com.theendercore.packed.api
+package com.theendercore.packed.inv
 
 import com.theendercore.packed.util.charAt
 import net.minecraft.item.ItemStack

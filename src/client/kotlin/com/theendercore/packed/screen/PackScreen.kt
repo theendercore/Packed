@@ -43,7 +43,7 @@ class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: 
         renderBackground(graphics, mouseX, mouseY, delta)
         super.render(graphics, mouseX, mouseY, delta)
         drawMouseoverTooltip(graphics, mouseX, mouseY)
-        sortBtn?.setPosition((graphics.scaledWindowWidth / 2) + 45, 120)
+//        sortBtn?.setPosition((graphics.scaledWindowWidth / 2) + 45, 120)
     }
 
     companion object {

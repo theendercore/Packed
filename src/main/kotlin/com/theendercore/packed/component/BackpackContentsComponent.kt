@@ -2,56 +2,48 @@ package com.theendercore.packed.component
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import com.theendercore.packed.api.InvImpl
-import com.theendercore.packed.screen.PackScreenHandler
+import com.theendercore.packed.util.defaultedList
 import net.minecraft.client.item.TooltipData
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
+import net.minecraft.network.RegistryByteBuf
+import net.minecraft.network.codec.PacketCodec
 import net.minecraft.network.codec.PacketCodecs
-import net.minecraft.screen.NamedScreenHandlerFactory
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.text.Text
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.dynamic.Codecs
 
-data class BackpackContentsComponent(
-    override val stacks: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
-) : TooltipData, NamedScreenHandlerFactory, InvImpl {
-    constructor(size: Int) : this(DefaultedList.ofSize(size, ItemStack.EMPTY))
-    constructor(items: List<ItemStack>) : this(DefaultedList.ofSize(items.size, ItemStack.EMPTY)) {
+@Suppress("MagicNumber")
+data class BackpackContentsComponent(val stacks: DefaultedList<ItemStack>) : TooltipData {
+    constructor(size: Int) : this(defaultedList(size))
+    constructor(items: List<ItemStack>) : this(items.size) {
         items.forEachIndexed(stacks::set)
     }
 
-    fun toSlots(): List<PackSlot> = stacks.mapIndexed(::PackSlot)
-
-    override fun createMenu(syncId: Int, pInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler {
-        return PackScreenHandler(syncId, pInv, this)
-    }
-
-    override fun getDisplayName(): Text = Text.translatable("container.packed.backpack")
+    fun slotList(): List<PackSlot> = stacks.mapIndexedNotNull(PackSlot::slotOrNull)
 
     companion object {
+        private const val MAX_SIZE = 2048
+
         @JvmStatic
-        val EMPTY = BackpackContentsComponent()
-        val CODEC = PackSlot.CODEC.listOf()
-            .xmap(BackpackContentsComponent::fromSlots, BackpackContentsComponent::toSlots)
-        val PACKET_CODEC = ItemStack.OPTIONAL_PACKET_CODEC
-            .apply(PacketCodecs.toCollection())
-            .map(::BackpackContentsComponent, BackpackContentsComponent::stacks)
+        val EMPTY = BackpackContentsComponent(defaultedList(9))
+        val CODEC: Codec<BackpackContentsComponent> = PackSlot.CODEC.sizeLimitedListOf(MAX_SIZE)
+            .xmap(BackpackContentsComponent::fromSlots, BackpackContentsComponent::slotList)
+        val PACKET_CODEC: PacketCodec<RegistryByteBuf, BackpackContentsComponent> =
+            ItemStack.OPTIONAL_PACKET_CODEC.apply(PacketCodecs.toCollection(MAX_SIZE))
+                .map(::BackpackContentsComponent, BackpackContentsComponent::stacks)
 
 
+        @Suppress("MemberVisibilityCanBePrivate")
         fun fromSlots(slots: List<PackSlot>): BackpackContentsComponent {
-            return BackpackContentsComponent(
-                slots.fold(DefaultedList.of()) { acc, slot ->
-                    acc[slot.index] = slot.item
-                    acc
-                }
-            )
+            val size = slots.maxOf { it.index + 1 }
+            return BackpackContentsComponent(slots.fold(defaultedList(if (size < 9) 9 else size)) { acc, slot ->
+                acc[slot.index] = slot.item
+                acc
+            })
         }
 
         data class PackSlot(val index: Int, val item: ItemStack) {
             companion object {
+                fun slotOrNull(index: Int, stack: ItemStack) = if (stack.isEmpty) null else PackSlot(index, stack)
                 val CODEC: Codec<PackSlot> = RecordCodecBuilder.create {
                     it.group(
                         Codecs.NONNEGATIVE_INT.fieldOf("slot").forGetter(PackSlot::index),

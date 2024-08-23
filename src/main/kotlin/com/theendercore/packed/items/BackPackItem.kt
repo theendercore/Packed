@@ -1,5 +1,8 @@
 package com.theendercore.packed.items
 
+import com.theendercore.packed.inv.BackpackInventory
+import com.theendercore.packed.screen.PackScreenHandler
+import com.theendercore.packed.util.NamedScreenMaker
 import com.theendercore.packed.util.getBackpackContents
 import com.theendercore.packed.util.openBackpack
 import net.minecraft.client.item.TooltipData
@@ -9,6 +12,7 @@ import net.minecraft.item.Equippable
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.Holder
+import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Hand
@@ -16,7 +20,7 @@ import net.minecraft.util.TypedActionResult
 import net.minecraft.world.World
 import java.util.*
 
-class PackItem(settings: Settings) : Item(settings), Equippable {
+class BackPackItem(settings: Settings) : Item(settings), Equippable {
     override fun use(world: World, player: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> {
         val stack = player.getStackInHand(hand)
 
@@ -31,4 +35,10 @@ class PackItem(settings: Settings) : Item(settings), Equippable {
     override fun getPreferredSlot(): EquipmentSlot = EquipmentSlot.CHEST
     override fun getEquipSound(): Holder<SoundEvent> = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
     override fun canBeNested(): Boolean = false
+
+    companion object {
+        fun makeBackpackScreen(stack: ItemStack): NamedScreenHandlerFactory = NamedScreenMaker(stack.name) { syncId, inv, _ ->
+            PackScreenHandler(syncId, inv, BackpackInventory(stack))
+        }
+    }
 }

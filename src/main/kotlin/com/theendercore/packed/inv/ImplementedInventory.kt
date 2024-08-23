@@ -1,6 +1,6 @@
-package com.theendercore.packed.api
+package com.theendercore.packed.inv
 
-import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.items.BackPackItem
 import com.theendercore.packed.util.toCollectedStacks
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
@@ -15,7 +15,7 @@ import kotlin.math.min
  * Originally by Juuz
  */
 @Suppress("unused")
-interface InvImpl : Inventory {
+interface ImplementedInventory : Inventory {
 
     val stacks: DefaultedList<ItemStack>
 
@@ -57,15 +57,12 @@ interface InvImpl : Inventory {
 
     override fun clear() = stacks.clear()
 
-    override fun markDirty() {
-        // Override if you want behavior.
-    }
-
     override fun canPlayerUse(player: PlayerEntity): Boolean = true
 
 
-    override fun isValid(slot: Int, stack: ItemStack): Boolean = stack.item !is PackItem
+    override fun isValid(slot: Int, stack: ItemStack): Boolean = stack.item !is BackPackItem
 
+    @Suppress("MagicNumber")
     fun sort(type: SortType = SortType.NORMAL) {
         val sortedItems = stacks.toCollectedStacks().toSortedMap(type.getSort())
             .flatMap { (item, count) ->
@@ -85,19 +82,4 @@ interface InvImpl : Inventory {
         sortedItems.forEachIndexed(stacks::set)
         markDirty()
     }
-
-
-//    companion object {
-//        fun of(items: DefaultedList<ItemStack>): InvImpl {
-//            return object : InvImpl {
-//                override val stacks: DefaultedList<ItemStack>
-//                    get() = items
-//
-//            }
-//        }
-//
-//        fun ofSize(size: Int): InvImpl {
-//            return of(DefaultedList.ofSize(size, ItemStack.EMPTY))
-//        }
-//    }
 }

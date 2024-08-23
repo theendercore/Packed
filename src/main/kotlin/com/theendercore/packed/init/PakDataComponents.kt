@@ -10,7 +10,7 @@ import java.util.function.UnaryOperator
 object PakDataComponents {
     fun init() = Unit
     val BACKPACK_CONTENTS = register("backpack_contents_v1a") {
-        it.codec(BackpackContentsComponent.CODEC).packetCodec(BackpackContentsComponent.PACKET_CODEC)
+        it.codec(BackpackContentsComponent.CODEC).packetCodec(BackpackContentsComponent.PACKET_CODEC).method_59871()
     }
 
     @Suppress("UNCHECKED_CAST")
