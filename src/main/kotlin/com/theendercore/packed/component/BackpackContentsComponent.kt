@@ -3,10 +3,7 @@ package com.theendercore.packed.component
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.theendercore.packed.api.InvImpl
-import com.theendercore.packed.api.SortType
 import com.theendercore.packed.screen.PackScreenHandler
-import com.theendercore.packed.util.setBackpackContents
-import com.theendercore.packed.util.toCollectedStacks
 import net.minecraft.client.item.TooltipData
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -17,50 +14,22 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.text.Text
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.dynamic.Codecs
-import kotlin.math.min
 
-data class BackpackContentsComponent(override val stacks: DefaultedList<ItemStack> = DefaultedList.ofSize(9)) :
-    TooltipData, NamedScreenHandlerFactory, InvImpl {
-    //  figure out how to remove this later
-    var TEMPORARY_INTERNAL_STACK: ItemStack = ItemStack.EMPTY
-
-
+data class BackpackContentsComponent(
+    override val stacks: DefaultedList<ItemStack> = DefaultedList.ofSize(9, ItemStack.EMPTY)
+) : TooltipData, NamedScreenHandlerFactory, InvImpl {
     constructor(size: Int) : this(DefaultedList.ofSize(size, ItemStack.EMPTY))
-    constructor(items: List<ItemStack>) : this() {
+    constructor(items: List<ItemStack>) : this(DefaultedList.ofSize(items.size, ItemStack.EMPTY)) {
         items.forEachIndexed(stacks::set)
     }
+
     fun toSlots(): List<PackSlot> = stacks.mapIndexed(::PackSlot)
 
-
-    override fun createMenu(syncId: Int, pInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler =
-        PackScreenHandler(syncId, pInv, TEMPORARY_INTERNAL_STACK)
-
-    override fun getDisplayName(): Text = TEMPORARY_INTERNAL_STACK.name
-
-
-    override fun markDirty() {
-        TEMPORARY_INTERNAL_STACK.setBackpackContents(stacks)
+    override fun createMenu(syncId: Int, pInv: PlayerInventory, playerEntity: PlayerEntity): ScreenHandler {
+        return PackScreenHandler(syncId, pInv, this)
     }
 
-    override fun sort(type: SortType) {
-        val sortedItems = stacks.toCollectedStacks().toSortedMap(type.getSort())
-            .flatMap { (item, count) ->
-                val itemCounts = mutableListOf<ItemStack>()
-                if (count <= 64) {
-                    itemCounts.add(item.copyWithCount(count))
-                } else {
-                    var remaining = count
-                    while (remaining > 0) {
-                        itemCounts.add(item.copyWithCount(min(remaining, 64)))
-                        remaining -= 64
-                    }
-                }
-                itemCounts
-            }
-        stacks.clear()
-        sortedItems.forEachIndexed(stacks::set)
-        super.sort(type)
-    }
+    override fun getDisplayName(): Text = Text.translatable("container.packed.backpack")
 
     companion object {
         @JvmStatic

@@ -1,7 +1,6 @@
 package com.theendercore.packed.init
 
 import com.theendercore.packed.Packed.id
-import com.theendercore.packed.Packed.log
 import com.theendercore.packed.Packed.trinketsInstalled
 import com.theendercore.packed.compat.Trinkets
 import com.theendercore.packed.items.PackItem
