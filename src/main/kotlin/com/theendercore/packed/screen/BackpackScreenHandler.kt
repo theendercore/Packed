@@ -8,9 +8,8 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
-import net.minecraft.server.network.ServerPlayerEntity
 
-@Suppress("MagicNumber" )
+@Suppress("MagicNumber")
 class BackpackScreenHandler(
     syncId: Int, playerInventory: PlayerInventory,
     private val inventory: BackpackInventory = BackpackInventory(ItemStack.EMPTY),
@@ -59,7 +58,8 @@ class BackpackScreenHandler(
     }
 
     override fun close(player: PlayerEntity) {
-        if (player is ServerPlayerEntity) inventory.markDirty()
+        inventory.markDirty()
+
         super.close(player)
         inventory.onClose(player)
     }

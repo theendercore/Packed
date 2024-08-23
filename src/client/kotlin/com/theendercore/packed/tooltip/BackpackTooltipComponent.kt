@@ -1,7 +1,7 @@
 package com.theendercore.packed.tooltip
 
 import com.theendercore.packed.component.BackpackContentsComponent
-import com.theendercore.packed.util.toCollectedMap
+import com.theendercore.packed.util.toCollectedStacks
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.Screen
@@ -31,14 +31,14 @@ class BackpackTooltipComponent(private val backpackContents: BackpackContentsCom
     override fun drawItems(textRenderer: TextRenderer?, x: Int, y: Int, graphics: GuiGraphics) {
         super.drawItems(textRenderer, x, y, graphics)
         if (Screen.hasShiftDown()) {
-            backpackContents.stacks.toCollectedMap().entries.forEachIndexed { idx, (item, count) ->
+            toCollectedEntries().forEachIndexed { idx, item ->
                 graphics.drawItem(item, x + idx * 18, y, 0)
-                graphics.drawItemInSlot(textRenderer, item.copyWithCount(count), x + idx * 18, y)
+                graphics.drawItemInSlot(textRenderer, item, x + idx * 18, y)
             }
         }
     }
 
-    private fun toCollectedEntries() = backpackContents.stacks.toCollectedMap().entries
+    private fun toCollectedEntries() = backpackContents.stacks.toCollectedStacks()
 
     fun columns(): Int {
         val stacks = toCollectedEntries()
