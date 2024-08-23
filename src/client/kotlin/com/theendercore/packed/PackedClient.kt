@@ -2,9 +2,9 @@ package com.theendercore.packed
 
 import com.theendercore.packed.Packed.trinketsInstalled
 import com.theendercore.packed.component.BackpackContentsComponent
+import com.theendercore.packed.init.PakItems
 import com.theendercore.packed.init.PakKeybindings
 import com.theendercore.packed.init.PakScreens.PACK_HANDLER
-import com.theendercore.packed.init.PakItems
 import com.theendercore.packed.rendering.ArmorPackRenderer
 import com.theendercore.packed.rendering.TrinketPackRenderer
 import com.theendercore.packed.screen.PackScreen
