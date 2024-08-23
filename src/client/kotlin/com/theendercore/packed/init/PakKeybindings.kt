@@ -11,7 +11,7 @@ object PakKeybindings {
     private const val category = "Packed"
 
     private val openPackKey = KeyBindingHelper.registerKeyBinding(
-        KeyBind("Open Pack", InputUtil.KEY_B_CODE, category)
+        KeyBind("Open Backpack", InputUtil.KEY_B_CODE, category)
     )
 
     private var packCooldown = 0

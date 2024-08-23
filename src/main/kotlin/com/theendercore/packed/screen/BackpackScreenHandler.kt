@@ -11,7 +11,7 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.server.network.ServerPlayerEntity
 
 @Suppress("MagicNumber" )
-class PackScreenHandler(
+class BackpackScreenHandler(
     syncId: Int, playerInventory: PlayerInventory,
     private val inventory: BackpackInventory = BackpackInventory(ItemStack.EMPTY),
 ) : ScreenHandler(PACK_HANDLER, syncId) {
@@ -26,7 +26,7 @@ class PackScreenHandler(
             var i = 0
             for (row in 0..2) {
                 for (col in 0..2) {
-                    addSlot(PackSlot(inventory, i, gridX + 18 * col, gridY + 18 * row))
+                    addSlot(BackpackSlot(inventory, i, gridX + 18 * col, gridY + 18 * row))
                     i++
                 }
             }
@@ -80,9 +80,9 @@ class PackScreenHandler(
         // Inv
         for (i in 0..2) for (l in 0..8) {
             val idx = l + i * 9 + 9
-            addSlot(PackPlayerSlot(this, idx, 8 + l * 18, 84 + i * 18))
+            addSlot(BackpackPlayerSlot(this, idx, 8 + l * 18, 84 + i * 18))
         }
         // Hotbar
-        for (i in 0..8) addSlot(PackPlayerSlot(this, i, 8 + i * 18, 142))
+        for (i in 0..8) addSlot(BackpackPlayerSlot(this, i, 8 + i * 18, 142))
     }
 }

@@ -3,43 +3,39 @@ package com.theendercore.packed.tooltip
 import com.theendercore.packed.component.BackpackContentsComponent
 import com.theendercore.packed.util.toCollectedStacks
 import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.font.TextRenderer.TextLayerType
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.tooltip.TooltipComponent
 import net.minecraft.client.render.VertexConsumerProvider
-import net.minecraft.text.Text
 import org.joml.Matrix4f
+import kotlin.math.max
 
 class BackpackTooltipComponent(private val backpackContents: BackpackContentsComponent) : TooltipComponent {
-    override fun getHeight(): Int = (collectedText().size * 9) + 1
-    override fun getWidth(textRenderer: TextRenderer): Int {
-        val stacks = collectedText()
-        return if (stacks.isEmpty()) 0
-        else collectedText().maxOf(textRenderer::getWidth)
-    }
-
+    override fun getHeight(): Int = (max(1, (toCollectedEntries().size / 6)) * 18)
+    override fun getWidth(textRenderer: TextRenderer): Int = 18 * columns()
     override fun drawText(
         textRenderer: TextRenderer,
         x: Int,
         y: Int,
         modelMatrix: Matrix4f?,
         vertexConsumer: VertexConsumerProvider.Immediate?
-    ) {
-        collectedText().forEachIndexed { idx, text ->
-            textRenderer.draw(
-                text,
-                x.toFloat(),
-                y.toFloat() + idx * textRenderer.fontHeight,
-                -1,
-                true,
-                modelMatrix,
-                vertexConsumer,
-                TextLayerType.NORMAL,
-                0,
-                0xF000F0
-            )
+    ) = Unit
+
+    override fun drawItems(textRenderer: TextRenderer?, x: Int, y: Int, graphics: GuiGraphics) {
+        super.drawItems(textRenderer, x, y, graphics)
+        if (Screen.hasShiftDown()) {
+            backpackContents.stacks.toCollectedStacks().entries.forEachIndexed { idx, (item, count) ->
+                graphics.drawItem(item, x + idx * 18, y, 0)
+                graphics.drawItemInSlot(textRenderer, item.copyWithCount(count), x + idx * 18, y)
+            }
         }
     }
 
-    private fun collectedText() = backpackContents.stacks.toCollectedStacks().entries
-        .map { (item, count) -> Text.translatable("%sx %s", count, item.item) }
+    private fun toCollectedEntries() = backpackContents.stacks.toCollectedStacks().entries
+
+    fun columns(): Int {
+        val stacks = toCollectedEntries()
+        return if (stacks.size > 6) 6
+        else stacks.size
+    }
 }

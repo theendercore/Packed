@@ -20,5 +20,13 @@ class ItemTagProvider(o: FabricDataOutput, r: CompletableFuture<HolderLookup.Pro
 
         getOrCreateTagBuilder(BACKPACKS)
             .add(PakItems.PACK)
+
+        enchantments()
+    }
+
+    private fun enchantments(){
+        getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
+            .forceAddTag(BACKPACKS)
+        getOrCreateTagBuilder(ItemTags.EQUIPPABLE_ENCHANTABLE)
     }
 }

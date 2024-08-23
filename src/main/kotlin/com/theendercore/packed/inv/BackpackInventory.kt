@@ -14,7 +14,5 @@ class BackpackInventory(val backpack: ItemStack, override val stacks: DefaultedL
         backpack.getBackpackContents()?.stacks?.forEachIndexed(stacks::set)
     }
 
-    override fun markDirty() {
-        backpack.setBackpackContents(stacks)
-    }
+    override fun markDirty() = backpack.setBackpackContents(stacks)
 }

@@ -1,7 +1,7 @@
 package com.theendercore.packed.items
 
 import com.theendercore.packed.inv.BackpackInventory
-import com.theendercore.packed.screen.PackScreenHandler
+import com.theendercore.packed.screen.BackpackScreenHandler
 import com.theendercore.packed.util.NamedScreenMaker
 import com.theendercore.packed.util.getBackpackContents
 import com.theendercore.packed.util.openBackpack
@@ -38,7 +38,7 @@ class BackPackItem(settings: Settings) : Item(settings), Equippable {
 
     companion object {
         fun makeBackpackScreen(stack: ItemStack): NamedScreenHandlerFactory = NamedScreenMaker(stack.name) { syncId, inv, _ ->
-            PackScreenHandler(syncId, inv, BackpackInventory(stack))
+            BackpackScreenHandler(syncId, inv, BackpackInventory(stack))
         }
     }
 }

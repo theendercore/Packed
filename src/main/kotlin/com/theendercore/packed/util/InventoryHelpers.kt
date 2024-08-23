@@ -19,10 +19,6 @@ fun DefaultedList<ItemStack>.toCollectedStacks(): MutableMap<ItemStack, Int> {
 }
 
 
-fun PlayerEntity.openBackpack(stack: ItemStack): Boolean {
-    val backpackContents = stack.getBackpackContents()
-    return if (backpackContents != null) {
-        this.openHandledScreen(makeBackpackScreen(stack))
-        true
-    } else false
-}
+fun PlayerEntity.openBackpack(stack: ItemStack): Boolean =
+    ifRun(stack.isBackpack()) { this.openHandledScreen(makeBackpackScreen(stack)) }
+

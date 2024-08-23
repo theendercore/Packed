@@ -11,13 +11,17 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.math.Axis
 
 
-object PackRenderer {
+@Suppress("MagicNumber")
+object BackpackRenderer {
     private val renderer = MinecraftClient.getInstance().itemRenderer
-    fun render(
+
+    fun renderBackpack(
         matrices: MatrixStack, vertexConsumers: VertexConsumerProvider,
         entity: LivingEntity, stack: ItemStack, light: Int,
     ) {
         if (stack.isBackpack()) {
+            //change all of this to be a func u can call
+
             matrices.push()
             matrices.scale(0.6f, 0.6f, 0.6f)
 

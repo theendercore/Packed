@@ -11,13 +11,13 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 
 
-class ArmorPackRenderer : ArmorRenderer {
+class ArmorBackpackRenderer : ArmorRenderer {
     override fun render(
         matrices: MatrixStack, vertexConsumers: VertexConsumerProvider,
         stack: ItemStack, entity: LivingEntity, slot: EquipmentSlot,
         light: Int, contextModel: BipedEntityModel<LivingEntity>,
     ) {
-        if (trinketsInstalled) if (Trinkets.shouldRenderTrinket(entity)) return
-        PackRenderer.render(matrices, vertexConsumers, entity, stack, light)
+        if (trinketsInstalled && Trinkets.shouldRenderTrinket(entity)) return
+        BackpackRenderer.renderBackpack(matrices, vertexConsumers, entity, stack, light)
     }
 }

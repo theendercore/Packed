@@ -9,8 +9,8 @@ import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
-class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: Text?) :
-    HandledScreen<PackScreenHandler>(handler, inventory, title) {
+class BackpackScreen(handler: BackpackScreenHandler, inventory: PlayerInventory, title: Text?) :
+    HandledScreen<BackpackScreenHandler>(handler, inventory, title) {
     var sortBtn: ButtonWidget? = null
 
     override fun init() {
@@ -25,7 +25,7 @@ class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: 
             }
             .size(BTN_W, BTN_H)
             .tooltip(Tooltip.create(Text.of("Sort")))
-            .position((backgroundWidth - 10) / 2, titleY + 10)
+            .position(x + backgroundWidth - BTN_W - 10, y + 10)
             .build()
         addDrawableSelectableElement(sortBtn)
     }
@@ -40,12 +40,11 @@ class PackScreen(handler: PackScreenHandler, inventory: PlayerInventory, title: 
     }
 
     override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
-        renderBackground(graphics, mouseX, mouseY, delta)
         super.render(graphics, mouseX, mouseY, delta)
-        drawMouseoverTooltip(graphics, mouseX, mouseY)
-//        sortBtn?.setPosition((graphics.scaledWindowWidth / 2) + 45, 120)
+        this.drawMouseoverTooltip(graphics, mouseX, mouseY)
     }
 
+    @Suppress("unused")
     companion object {
         private val BACKGROUND = Identifier.ofDefault("textures/gui/container/dispenser.png")
         private val BUTTON = Identifier.ofDefault("textures/gui/container/creative_inventory/tabs.png")
