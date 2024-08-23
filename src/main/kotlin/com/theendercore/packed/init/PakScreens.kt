@@ -9,11 +9,12 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.ScreenHandlerType.Factory
 
-object PaScreens {
+object PakScreens {
+    fun init() = Unit
     val PACK_HANDLER = reg("pack_handler", ::PackScreenHandler)
 
-    fun init() {}
     private fun <T : ScreenHandler> reg(id: String, factory: Factory<T>): ScreenHandlerType<T> =
-        Registries.SCREEN_HANDLER_TYPE.register(id(id), ScreenHandlerType(factory, FeatureFlags.DEFAULT_SET)) as ScreenHandlerType<T>
+        Registries.SCREEN_HANDLER_TYPE.register(id(id), ScreenHandlerType(factory, FeatureFlags.DEFAULT_SET))
+                as ScreenHandlerType<T>
 
 }

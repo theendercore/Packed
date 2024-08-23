@@ -1,13 +1,13 @@
 package com.theendercore.packed.init
 
 import com.mojang.blaze3d.platform.InputUtil
-import com.theendercore.packed.init.PaNetwork.OpenPackPayload
+import com.theendercore.packed.init.PakNetwork.OpenPackPayload
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.option.KeyBind
 
-object PaKeybinds {
+object PakKeybindings {
     private const val category = "Packed"
 
     private val openPackKey = KeyBindingHelper.registerKeyBinding(

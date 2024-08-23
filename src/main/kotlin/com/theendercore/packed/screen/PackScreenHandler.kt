@@ -3,7 +3,7 @@ package com.theendercore.packed.screen
 import com.theendercore.packed.Packed.log
 import com.theendercore.packed.api.InvImpl
 import com.theendercore.packed.api.SortType
-import com.theendercore.packed.init.PaScreens.PACK_HANDLER
+import com.theendercore.packed.init.PakScreens.PACK_HANDLER
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory

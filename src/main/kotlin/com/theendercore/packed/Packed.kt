@@ -15,8 +15,8 @@ object Packed {
         if (FabricLoader.getInstance().isModLoaded("trinkets")) trinketsInstalled = true
         PakItems.init()
         PakDataComponents.init()
-        PaScreens.init()
-        PaNetwork.init()
+        PakScreens.init()
+        PakNetwork.init()
         PakTabs.init()
     }
 

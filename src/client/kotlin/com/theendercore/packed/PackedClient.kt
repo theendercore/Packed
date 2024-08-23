@@ -2,8 +2,8 @@ package com.theendercore.packed
 
 import com.theendercore.packed.Packed.trinketsInstalled
 import com.theendercore.packed.component.BackpackContentsComponent
-import com.theendercore.packed.init.PaKeybinds
-import com.theendercore.packed.init.PaScreens.PACK_HANDLER
+import com.theendercore.packed.init.PakKeybindings
+import com.theendercore.packed.init.PakScreens.PACK_HANDLER
 import com.theendercore.packed.init.PakItems
 import com.theendercore.packed.rendering.ArmorPackRenderer
 import com.theendercore.packed.rendering.TrinketPackRenderer
@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack
 @Suppress("unused")
 object PackedClient {
     fun init() {
-        PaKeybinds.init()
+        PakKeybindings.init()
         HandledScreens.register(PACK_HANDLER, ::PackScreen)
         ArmorRenderer.register(ArmorPackRenderer(), PakItems.PACK)
 
@@ -33,5 +33,5 @@ object PackedClient {
         if (trinketsInstalled) TrinketRendererRegistry.registerRenderer(PakItems.PACK, TrinketPackRenderer())
     }
 
-    fun getDyedColor(item: ItemStack, layer: Int): Int = DyedColorComponent.getColorOrDefault(item, 0xFFFFFF)
+    fun getDyedColor(item: ItemStack, ignored: Int): Int = DyedColorComponent.getColorOrDefault(item, 0xFFFFFF)
 }

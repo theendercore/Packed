@@ -11,7 +11,7 @@ import net.minecraft.item.Item
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.network.packet.payload.CustomPayload
 
-object PaNetwork {
+object PakNetwork {
 
     fun init() {
         PayloadTypeRegistry.playC2S().register(OpenPackPayload.ID, OpenPackPayload.CODEC)
