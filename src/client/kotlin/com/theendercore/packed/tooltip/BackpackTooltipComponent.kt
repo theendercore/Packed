@@ -6,8 +6,6 @@ import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.tooltip.TooltipComponent
-import net.minecraft.client.render.VertexConsumerProvider
-import org.joml.Matrix4f
 import kotlin.math.max
 
 class BackpackTooltipComponent(private val backpackContents: BackpackContentsComponent) : TooltipComponent {
@@ -20,14 +18,6 @@ class BackpackTooltipComponent(private val backpackContents: BackpackContentsCom
     }
 
     override fun getWidth(textRenderer: TextRenderer): Int = if (Screen.hasShiftDown()) 18 * columns() else 0
-    override fun drawText(
-        textRenderer: TextRenderer,
-        x: Int,
-        y: Int,
-        modelMatrix: Matrix4f?,
-        vertexConsumer: VertexConsumerProvider.Immediate?
-    ) = Unit
-
     override fun drawItems(textRenderer: TextRenderer?, x: Int, y: Int, graphics: GuiGraphics) {
         super.drawItems(textRenderer, x, y, graphics)
         if (Screen.hasShiftDown()) {
