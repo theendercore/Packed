@@ -1,6 +1,6 @@
 package com.theendercore.packed.inv
 
-import com.theendercore.packed.util.charAt
+import com.theendercore.packed.util.id
 import net.minecraft.item.ItemStack
 
 enum class SortType {
@@ -8,11 +8,11 @@ enum class SortType {
     REVERSED,
     SPECIAL;
 
-    fun getSort(): (ItemStack, ItemStack) -> Int {
+    fun getSort(): Comparator<ItemStack> {
         return when (this) {
-            NORMAL -> { a, b -> a.charAt(0) - b.charAt(0) }
-            REVERSED -> { a, b -> b.charAt(0) - a.charAt(0) }
-            else -> { _, _ -> 0 }
+            NORMAL -> compareBy { it.item.id.path }
+            REVERSED -> compareBy<ItemStack> { it.item.id.path }.reversed()
+            else -> compareBy { 0 }
         }
     }
 }

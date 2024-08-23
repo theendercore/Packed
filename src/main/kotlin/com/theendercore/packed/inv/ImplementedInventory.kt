@@ -64,14 +64,10 @@ interface ImplementedInventory : Inventory {
 
     @Suppress("MagicNumber")
     fun sort(type: SortType = SortType.NORMAL) {
-        val x = stacks.toCollectedStacks().toSortedMap(type.getSort())
+        val x = stacks.toCollectedStacks().sortedWith(type.getSort())
 
-
-        println("Sorted items: ")
-        x.forEach { (item, count) ->
-            println("\t$item: $count")
-        }
-        val sortedItems = x.flatMap { (item, count) ->
+        val sortedItems = x.flatMap { item ->
+            val count = item.count
             val itemCounts = mutableListOf<ItemStack>()
             if (count <= 64) {
                 itemCounts.add(item.copyWithCount(count))
