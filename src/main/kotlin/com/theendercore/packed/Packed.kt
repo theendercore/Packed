@@ -3,11 +3,12 @@ package com.theendercore.packed
 import com.theendercore.packed.init.*
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 object Packed {
-    val log = LoggerFactory.getLogger(Packed::class.java)
+    val log: Logger = LoggerFactory.getLogger(Packed::class.java)
     const val MODID = "packed"
     var trinketsInstalled = false
 
