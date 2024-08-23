@@ -1,7 +1,7 @@
 package com.theendercore.packed.api
 
 import com.theendercore.packed.items.PackItem
-import com.theendercore.packed.items.PackItem.Companion.charAt
+import com.theendercore.packed.util.charAt
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.Inventory
@@ -16,10 +16,10 @@ import net.minecraft.util.collection.DefaultedList
 @Suppress("unused")
 interface InvImpl : Inventory {
 
-    val items: DefaultedList<ItemStack>
+    val stacks: DefaultedList<ItemStack>
 
     override fun size(): Int {
-        return items.size
+        return stacks.size
     }
 
     override fun isEmpty(): Boolean {
@@ -34,12 +34,12 @@ interface InvImpl : Inventory {
 
 
     override fun getStack(slot: Int): ItemStack {
-        return items[slot]
+        return stacks[slot]
     }
 
 
     override fun removeStack(slot: Int, count: Int): ItemStack {
-        val result = Inventories.splitStack(items, slot, count)
+        val result = Inventories.splitStack(stacks, slot, count)
         if (!result.isEmpty) {
             markDirty()
         }
@@ -47,19 +47,19 @@ interface InvImpl : Inventory {
     }
 
     override fun removeStack(slot: Int): ItemStack {
-        return Inventories.removeStack(items, slot)
+        return Inventories.removeStack(stacks, slot)
     }
 
 
     override fun setStack(slot: Int, stack: ItemStack) {
-        items[slot] = stack
+        stacks[slot] = stack
         if (stack.count > stack.maxCount) {
             stack.count = stack.maxCount
         }
     }
 
     override fun clear() {
-        items.clear()
+        stacks.clear()
     }
 
     override fun markDirty() {
@@ -75,24 +75,12 @@ interface InvImpl : Inventory {
         this.markDirty()
     }
 
-    enum class SortType {
-        NORMAL,
-        REVERSED,
-        SPECIAL;
 
-        fun getSort(): (ItemStack, ItemStack) -> Int {
-            return when (this) {
-                NORMAL -> { a, b -> a.charAt(0) - b.charAt(0) }
-                REVERSED -> { a, b -> b.charAt(0) - a.charAt(0) }
-                else -> { _, _ -> 0 }
-            }
-        }
-    }
 
     companion object {
         fun of(items: DefaultedList<ItemStack>): InvImpl {
             return object : InvImpl {
-                override val items: DefaultedList<ItemStack>
+                override val stacks: DefaultedList<ItemStack>
                     get() = items
 
             }

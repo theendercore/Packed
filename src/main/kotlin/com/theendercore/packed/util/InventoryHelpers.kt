@@ -1,5 +1,6 @@
 package com.theendercore.packed.util
 
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
 
@@ -14,4 +15,13 @@ fun DefaultedList<ItemStack>.toCollectedStacks(): MutableMap<ItemStack, Int> {
         else collectedItems[item] = count
     }
     return collectedItems
+}
+
+
+fun PlayerEntity.openBackpack(stack: ItemStack): Boolean {
+    val backpackContents = stack.getBackpackContents()
+    return if (backpackContents != null) {
+        this.openHandledScreen(backpackContents)
+        true
+    } else false
 }

@@ -5,6 +5,7 @@ import com.theendercore.packed.Packed.log
 import com.theendercore.packed.Packed.trinketsInstalled
 import com.theendercore.packed.compat.Trinkets
 import com.theendercore.packed.items.PackItem
+import com.theendercore.packed.util.openBackpack
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.item.Item
@@ -21,11 +22,10 @@ object PaNetwork {
             if (trinketsInstalled && Trinkets.handleTrinkets(player)) return@msg
             if (!inv.containsAny(mutableSetOf(PakItems.PACK) as Set<Item>)) return@msg
 
-            if (!PakItems.PACK.openPack(inv.armor[2], player) && !PakItems.PACK.openPack(inv.offHand[0], player)) {
+            if (!player.openBackpack(inv.armor[2]) && !player.openBackpack(inv.offHand[0])) {
                 player.inventory.main.forEach {
                     if (it.item is PackItem) {
-                        log.info("Found item")
-                        PakItems.PACK.openPack(it, player)
+                        player.openBackpack(it)
                         return@msg
                     }
                 }
