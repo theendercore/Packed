@@ -6,7 +6,7 @@ import com.theendercore.packed_up.util.setBackpackContents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
 
-class BackpackInventory(val backpack: ItemStack, override val stacks: DefaultedList<ItemStack>) : ImplementedInventory {
+class BackpackInventory(private val backpack: ItemStack, override val stacks: DefaultedList<ItemStack>) : ImplementedInventory {
     constructor(stack: ItemStack, size: Int) : this(stack, defaultedList(size))
     constructor(stack: ItemStack) : this(stack, stack.getBackpackContents()?.stacks?.size ?: 9)
 

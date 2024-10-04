@@ -5,9 +5,8 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 
 fun Iterable<ItemStack>.toCollectedStacks(): MutableList<ItemStack> {
-    val filteredItems = this.filterNot(ItemStack::isEmpty)
     val collectedItems = mutableListOf<ItemStack>()
-    for (item in filteredItems) {
+    for (item in this.filterNot(ItemStack::isEmpty)) {
         val exists = collectedItems.find { it.strictMatch(item) }
         if (exists != null) exists.count += item.count
         else collectedItems.add(item)

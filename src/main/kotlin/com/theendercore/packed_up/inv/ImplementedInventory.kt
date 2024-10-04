@@ -44,7 +44,11 @@ interface ImplementedInventory : Inventory {
     }
 
     override fun removeStack(slot: Int): ItemStack {
-        return Inventories.removeStack(stacks, slot)
+        val result = Inventories.removeStack(stacks, slot)
+        if (!result.isEmpty) {
+            markDirty()
+        }
+        return result
     }
 
 
@@ -55,7 +59,10 @@ interface ImplementedInventory : Inventory {
         }
     }
 
-    override fun clear() = stacks.clear()
+    override fun clear() {
+        stacks.clear()
+        markDirty()
+    }
 
     override fun canPlayerUse(player: PlayerEntity): Boolean = true
 
@@ -64,9 +71,9 @@ interface ImplementedInventory : Inventory {
 
     @Suppress("MagicNumber")
     fun sort(type: SortType = SortType.NORMAL) {
-        val x = stacks.toCollectedStacks().sortedWith(type.getSort())
+        val sortedList = stacks.toCollectedStacks().sortedWith(type.getSort())
 
-        val sortedItems = x.flatMap { item ->
+        val sortedItems = sortedList.flatMap { item ->
             val count = item.count
             val itemCounts = mutableListOf<ItemStack>()
             if (count <= 64) {

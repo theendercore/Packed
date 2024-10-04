@@ -1,39 +1,41 @@
 package com.theendercore.packed_up.tooltip
 
 import com.theendercore.packed_up.component.BackpackContentsComponent
-import com.theendercore.packed_up.util.toCollectedStacks
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.tooltip.TooltipComponent
+import net.minecraft.item.ItemStack
+import kotlin.math.ceil
 import kotlin.math.max
 
 @Suppress("MagicNumber")
-class BackpackTooltipComponent(private val backpackContents: BackpackContentsComponent) : TooltipComponent {
+class BackpackTooltipComponent(backpackContents: BackpackContentsComponent) : TooltipComponent {
+    private var compiled = backpackContents.stacks.toList().filterNot(ItemStack::isEmpty)
+
     override fun getHeight(): Int {
         return if (Screen.hasShiftDown()) {
-            val stacks = toCollectedEntries()
-            if (stacks.isEmpty()) 0
-            else (max(1, (stacks.size / 6)) * 18)
+            if (compiled.isEmpty()) 0
+            else (max(1, ceil(compiled.size / 8.0).toInt()) * 14)
         } else 0
     }
 
-    override fun getWidth(textRenderer: TextRenderer): Int = if (Screen.hasShiftDown()) 18 * columns() else 0
+    override fun getWidth(textRenderer: TextRenderer): Int = if (Screen.hasShiftDown()) 14 * columns() else 0
     override fun drawItems(textRenderer: TextRenderer?, x: Int, y: Int, graphics: GuiGraphics) {
-        super.drawItems(textRenderer, x, y, graphics)
         if (Screen.hasShiftDown()) {
-            toCollectedEntries().forEachIndexed { idx, item ->
-                graphics.drawItem(item, x + idx * 18, y, 0)
-                graphics.drawItemInSlot(textRenderer, item, x + idx * 18, y)
+            super.drawItems(textRenderer, x, y, graphics)
+            compiled.chunked(8).forEachIndexed { rowIdx, list ->
+                list.forEachIndexed { colIdx, item ->
+                    graphics.matrices.push()
+                    graphics.matrices.translate(x.toDouble(), y.toDouble(), 1.0)
+                    graphics.matrices.scale(0.8f, 0.8f, 0.8f)
+                    graphics.drawItem(item, colIdx * 17, rowIdx * 17, 0)
+                    graphics.drawItemInSlot(textRenderer, item, colIdx * 17, rowIdx * 17)
+                    graphics.matrices.pop()
+                }
             }
         }
     }
 
-    private fun toCollectedEntries() = backpackContents.stacks.toCollectedStacks()
-
-    fun columns(): Int {
-        val stacks = toCollectedEntries()
-        return if (stacks.size > 6) 6
-        else stacks.size
-    }
+    fun columns(): Int = if (compiled.size > 8) 8 else compiled.size
 }
