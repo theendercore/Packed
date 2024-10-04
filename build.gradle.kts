@@ -45,7 +45,7 @@ dependencies {
     modCompileOnly("${libs.emi.get()}:api")
     modLocalRuntime(libs.emi)
 
-    modImplementation(libs.trinkets)
+//    modImplementation(libs.trinkets)
 }
 
 loom {
