@@ -1,6 +1,6 @@
 package com.theendercore.packed_up.inv
 
-import com.theendercore.packed_up.items.BackPackItem
+import com.theendercore.packed_up.items.BackpackItem
 import com.theendercore.packed_up.util.toCollectedStacks
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
@@ -67,7 +67,7 @@ interface ImplementedInventory : Inventory {
     override fun canPlayerUse(player: PlayerEntity): Boolean = true
 
 
-    override fun isValid(slot: Int, stack: ItemStack): Boolean = stack.item !is BackPackItem
+    override fun isValid(slot: Int, stack: ItemStack): Boolean = stack.item !is BackpackItem
 
     @Suppress("MagicNumber")
     fun sort(type: SortType = SortType.NORMAL) {

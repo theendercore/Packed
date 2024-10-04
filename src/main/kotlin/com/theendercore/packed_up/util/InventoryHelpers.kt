@@ -1,6 +1,6 @@
 package com.theendercore.packed_up.util
 
-import com.theendercore.packed_up.items.BackPackItem.Companion.makeBackpackScreen
+import com.theendercore.packed_up.items.BackpackItem.Companion.makeBackpackScreen
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 

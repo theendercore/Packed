@@ -1,7 +1,7 @@
 package com.theendercore.packed_up.init
 
 import com.theendercore.packed_up.PackedUp.id
-import com.theendercore.packed_up.items.BackPackItem
+import com.theendercore.packed_up.items.BackpackItem
 import com.theendercore.packed_up.util.WHITE
 import com.theendercore.packed_up.util.backpack
 import com.theendercore.packed_up.util.dyeColor
@@ -12,8 +12,8 @@ import net.minecraft.registry.Registries
 
 @Suppress("UNCHECKED_CAST")
 object PakItems {
-    val PACK: BackPackItem = reg(
-        "pack", BackPackItem(
+    val PACK: BackpackItem = reg(
+        "pack", BackpackItem(
             Settings()
                 .maxCount(1)
                 .backpack()

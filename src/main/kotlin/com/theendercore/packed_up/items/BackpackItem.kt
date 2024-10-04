@@ -20,7 +20,7 @@ import net.minecraft.util.TypedActionResult
 import net.minecraft.world.World
 import java.util.*
 
-class BackPackItem(settings: Settings) : Item(settings), Equippable {
+class BackpackItem(settings: Settings) : Item(settings), Equippable {
     override fun use(world: World, player: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> {
         val stack = player.getStackInHand(hand)
 
