@@ -21,6 +21,9 @@ val curse_id: String? by project
 
 repositories {
     maven("https://teamvoided.org/releases")
+    maven("https://maven.wispforest.io/releases")
+    maven("https://maven.su5ed.dev/releases")
+    maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/") { name = "Terraformers" }
     mavenCentral()
 
@@ -29,9 +32,9 @@ repositories {
 }
 
 modSettings {
-    entrypoint("main", "com.theendercore.packed.Packed::init")
-    entrypoint("client", "com.theendercore.packed.PackedClient::init")
-    entrypoint("fabric-datagen", "com.theendercore.packed.data.gen.PackedData")
+    entrypoint("main", "com.theendercore.packed_up.PackedUp::init")
+    entrypoint("client", "com.theendercore.packed_up.PackedUpClient::init")
+    entrypoint("fabric-datagen", "com.theendercore.packed_up.data.gen.PackedUpData")
 
 //    mixinFile("${modId()}.client.mixins.json")
 //    mixinFile("${modId()}.mixins.json")
@@ -44,6 +47,7 @@ dependencies {
 
     modCompileOnly("${libs.emi.get()}:api")
     modLocalRuntime(libs.emi)
+//    modImplementation("io.wispforest:accessories-fabric:${properties["accessories_version"]}")
 
 //    modImplementation(libs.trinkets)
 }
